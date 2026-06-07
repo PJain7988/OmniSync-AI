@@ -29,8 +29,11 @@ if (!fs.existsSync(JSON_DB_PATH)) {
 }
 
 let isUsingMongoDB = false;
+let _seedingDone = false; // guard — only seed once per process
 
 async function seedInitialCredentials() {
+  if (_seedingDone) return; // prevent double-run
+  _seedingDone = true;
   try {
     const credPath = path.join(__dirname, '../initial_credentials.json');
     if (!fs.existsSync(credPath)) {
@@ -120,21 +123,26 @@ async function seedInitialCredentials() {
 }
 
 async function connectDB() {
+  if (mongoose.connection.readyState === 1) {
+    // Already connected — skip reconnect
+    isUsingMongoDB = true;
+    return;
+  }
   const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/omnisync';
   try {
     console.log(`[Database] Attempting to connect to MongoDB at ${mongoURI}...`);
     await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 3000
+      serverSelectionTimeoutMS: 10000, // 10s — enough for Render cold-start + Atlas
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 45000
     });
     isUsingMongoDB = true;
     console.log('[Database] Successfully connected to MongoDB.');
   } catch (error) {
-    console.warn('[Database] MongoDB connection failed or service not running. Falling back to local JSON File Database.');
+    console.warn('[Database] MongoDB connection failed. Falling back to local JSON File Database.');
     isUsingMongoDB = false;
   }
-  
-  // Run seed check immediately after connection selection
-  await seedInitialCredentials();
+  // NOTE: seeding is NOT called here — server.js calls it once after startup
 }
 
 const localDB = {
@@ -181,6 +189,7 @@ const localDB = {
 
 module.exports = {
   connectDB,
+  seedInitialCredentials,
   isUsingMongoDB: () => isUsingMongoDB,
   db: localDB
 };

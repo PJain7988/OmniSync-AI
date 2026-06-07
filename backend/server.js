@@ -6,7 +6,7 @@ const WebSocket = require('ws');
 const path = require('path');
 const fs = require('fs');
 
-const { connectDB } = require('./db');
+const { connectDB, seedInitialCredentials } = require('./db');
 const apiRouter = require('./routes/api');
 
 const app = express();
@@ -17,20 +17,6 @@ app.use(express.json());
 
 // Serving uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Middleware to ensure DB connection is initialized
-let dbConnected = false;
-app.use(async (req, res, next) => {
-  if (!dbConnected) {
-    try {
-      await connectDB();
-      dbConnected = true;
-    } catch (err) {
-      console.error('[Database] Connection middleware error:', err);
-    }
-  }
-  next();
-});
 
 // Mount Unified API Router
 app.use('/api', apiRouter);
@@ -89,11 +75,13 @@ wss.on('connection', (ws) => {
 
 const PORT = process.env.PORT || 5000;
 if (!process.env.VERCEL) {
-  server.listen(PORT, async () => {
-    await connectDB();
-    dbConnected = true;
-    console.log(`[Server] OmniSync server running on port ${PORT}`);
-  });
+  (async () => {
+    await connectDB();          // Step 1 — connect (idempotent)
+    await seedInitialCredentials(); // Step 2 — seed once
+    server.listen(PORT, () => {
+      console.log(`[Server] OmniSync server running on port ${PORT}`);
+    });
+  })();
 }
 
 module.exports = app;
