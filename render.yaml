@@ -24,6 +24,10 @@ services:
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://omnisync-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://omnisync-backend.onrender.com/api/:splat
+      - type: rewrite
+        source: /*
+        destination: /index.html
