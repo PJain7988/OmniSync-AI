@@ -53,6 +53,7 @@ export default function LoginScreen({ onLogin, API_BASE }) {
   const [password, setPassword] = useState('password123');
   const [handle, setHandle] = useState('@admin_ops');
   const [selectedRole, setSelectedRole] = useState(ROLES[0]);
+  const [activeShowcase, setActiveShowcase] = useState(null);
   const [showTokenDetails, setShowTokenDetails] = useState(false);
   const [phoneTime, setPhoneTime] = useState('9:41');
   const [authError, setAuthError] = useState('');
@@ -614,6 +615,29 @@ export default function LoginScreen({ onLogin, API_BASE }) {
         </div>
       </main>
 
+      {/* Corporate Partners & Trust Section */}
+      <div style={{ 
+        width: '100%', 
+        maxWidth: '1100px', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: '40px', 
+        margin: '0 auto 60px', 
+        padding: '24px 0', 
+        borderTop: '1px solid rgba(30, 108, 240, 0.08)',
+        borderBottom: '1px solid rgba(30, 108, 240, 0.08)',
+        flexWrap: 'wrap', 
+        opacity: 0.5,
+        zIndex: 5
+      }}>
+        <span style={{ fontSize: '10px', fontWeight: '800', color: '#73849c', letterSpacing: '2px' }}>ENTERPRISE SYNC PARTNERS:</span>
+        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>◆ NEXUS CAPITAL</span>
+        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>⬢ CYBERDYNE HEALTH</span>
+        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>▲ APEX DIGITAL</span>
+        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>■ VANGUARD SYSTEMS</span>
+      </div>
+
       {/* JWT Token Visualizer Panel below */}
       <section style={{
         width: '100%',
@@ -711,6 +735,281 @@ export default function LoginScreen({ onLogin, API_BASE }) {
                 }, null, 2)}
               </pre>
             </div>
+          </div>
+        )}
+      </section>
+
+      {/* Dynamic Feature Showcase Section */}
+      <section style={{
+        width: '100%',
+        maxWidth: '1100px',
+        zIndex: 5,
+        marginBottom: '60px',
+        textAlign: 'left'
+      }}>
+        <span style={{ 
+          fontSize: '11px', 
+          fontWeight: '700', 
+          textTransform: 'uppercase', 
+          letterSpacing: '2px', 
+          color: '#1e6cf0', 
+          marginBottom: '10px',
+          display: 'block' 
+        }}>
+          OmniSync Intelligence Modules
+        </span>
+        <h2 style={{ 
+          fontSize: '28px', 
+          fontWeight: '800', 
+          color: '#0f1a30', 
+          marginBottom: '12px',
+          letterSpacing: '-0.5px' 
+        }}>
+          Explore Our Cognitive Suites
+        </h2>
+        <p style={{ fontSize: '14px', color: '#40516b', marginBottom: '32px', maxWidth: '700px', lineHeight: '1.5' }}>
+          Preview the underlying analytical frameworks and data structures handled by each micro-agent suite before starting your session.
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '24px',
+          marginBottom: '30px'
+        }}>
+          {/* Module 1: AI Governance */}
+          <div className="glass-card" style={{
+            background: 'rgba(255, 255, 255, 0.75)',
+            border: activeShowcase === 'governance' ? '2px solid #1e6cf0' : '1px solid rgba(30, 108, 240, 0.12)',
+            borderRadius: '20px',
+            padding: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onClick={() => setActiveShowcase('governance')}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                <span style={{ fontSize: '24px' }}>📊</span>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0f1a30', margin: 0 }}>Social Sentiment & Reputation</h3>
+              </div>
+              <p style={{ fontSize: '12px', color: '#73849c', lineHeight: '1.5', marginBottom: '16px' }}>
+                Performs deep sentiment extraction on real-time feeds to compute reputation coefficients and alert of social media crises.
+              </p>
+            </div>
+            <div style={{ background: '#ffffff', padding: '12px', borderRadius: '10px', fontSize: '11px', fontFamily: 'monospace', border: '1px solid rgba(30,108,240,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span>Reputation Score:</span>
+                <strong style={{ color: '#10b981' }}>87.4 / 100</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Risk Level:</span>
+                <span style={{ color: '#10b981', fontWeight: '700' }}>Low Risk</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Module 2: Legal Intelligence */}
+          <div className="glass-card" style={{
+            background: 'rgba(255, 255, 255, 0.75)',
+            border: activeShowcase === 'legal' ? '2px solid #1e6cf0' : '1px solid rgba(30, 108, 240, 0.12)',
+            borderRadius: '20px',
+            padding: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onClick={() => setActiveShowcase('legal')}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                <span style={{ fontSize: '24px' }}>⚖️</span>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0f1a30', margin: 0 }}>Legal Entity Extraction</h3>
+              </div>
+              <p style={{ fontSize: '12px', color: '#73849c', lineHeight: '1.5', marginBottom: '16px' }}>
+                Extracts key court metadata, petitioner details, and judgment terms from scanned court order PDF documents.
+              </p>
+            </div>
+            <div style={{ background: '#ffffff', padding: '12px', borderRadius: '10px', fontSize: '11px', fontFamily: 'monospace', border: '1px solid rgba(30,108,240,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span>Case ID:</span>
+                <strong>2025/001</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Petitioner:</span>
+                <strong>XYZ Corp</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Module 3: Healthcare */}
+          <div className="glass-card" style={{
+            background: 'rgba(255, 255, 255, 0.75)',
+            border: activeShowcase === 'healthcare' ? '2px solid #1e6cf0' : '1px solid rgba(30, 108, 240, 0.12)',
+            borderRadius: '20px',
+            padding: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onClick={() => setActiveShowcase('healthcare')}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                <span style={{ fontSize: '24px' }}>🏥</span>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0f1a30', margin: 0 }}>Predictive Analytics</h3>
+              </div>
+              <p style={{ fontSize: '12px', color: '#73849c', lineHeight: '1.5', marginBottom: '16px' }}>
+                Computes cardiovascular risks, glucose tendencies, and readmission probabilities using adaptive mathematical modeling.
+              </p>
+            </div>
+            <div style={{ background: '#ffffff', padding: '12px', borderRadius: '10px', fontSize: '11px', fontFamily: 'monospace', border: '1px solid rgba(30,108,240,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span>Heart Risk:</span>
+                <strong style={{ color: '#f59e0b' }}>34% (Medium)</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Readmissions:</span>
+                <strong>Low Probability</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Showcase Expanded View Panel */}
+        {activeShowcase && (
+          <div className="glass-card" style={{
+            background: 'rgba(255, 255, 255, 0.85)',
+            border: '2px solid #1e6cf0',
+            borderRadius: '24px',
+            padding: '28px',
+            animation: 'slide-down 0.3s ease-out'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: '800', color: '#0f1a30', textTransform: 'uppercase', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>⚡ Interactive Mock Engine:</span>
+                <span style={{ color: '#1e6cf0' }}>{activeShowcase} telemetry</span>
+              </h4>
+              <button 
+                onClick={() => setActiveShowcase(null)}
+                style={{ background: 'none', border: 'none', color: '#73849c', fontWeight: '700', cursor: 'pointer', fontSize: '12px' }}
+              >
+                Close Preview
+              </button>
+            </div>
+
+            {activeShowcase === 'governance' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
+                <div>
+                  <h5 style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', marginBottom: '8px' }}>Sentiment Breakdown Analysis</h5>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '2px' }}>
+                        <span>Positive Mentions</span>
+                        <strong>72%</strong>
+                      </div>
+                      <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '72%', height: '100%', background: '#10b981' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '2px' }}>
+                        <span>Neutral Conversations</span>
+                        <strong>18%</strong>
+                      </div>
+                      <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '18%', height: '100%', background: '#3b82f6' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '2px' }}>
+                        <span>Negative Flags</span>
+                        <strong>10%</strong>
+                      </div>
+                      <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '10%', height: '100%', background: '#ef4444' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ background: '#ffffff', padding: '16px', borderRadius: '16px', border: '1px solid rgba(30,108,240,0.08)' }}>
+                  <div style={{ fontSize: '11px', color: '#73849c', marginBottom: '6px' }}>CRISIS ADVISORY TELEMETRY</div>
+                  <div style={{ fontSize: '12px', fontWeight: '700', color: '#10b981', marginBottom: '4px' }}>✓ No brand crisis detected</div>
+                  <p style={{ fontSize: '11px', color: '#40516b', margin: 0, lineHeight: '1.4' }}>
+                    Social sentiment indicators remain high. Net promoter index has advanced 2.4 points over the past 48 hours.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {activeShowcase === 'legal' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
+                <div>
+                  <h5 style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', marginBottom: '8px' }}>Extracted Judicial Document Schema</h5>
+                  <pre style={{ margin: 0, background: '#ffffff', padding: '12px', borderRadius: '12px', border: '1px solid rgba(30,108,240,0.08)', fontSize: '10px', color: '#40516b', fontFamily: 'monospace' }}>
+{`{
+  "case_no": "2025/001",
+  "judge_name": "Hon. Albert Higgins",
+  "petitioner": "XYZ Logistics Corp",
+  "respondent": "PQR Port Operations",
+  "judgment_summary": "Order granted in favor of petitioner..."
+}`}
+                  </pre>
+                </div>
+                <div style={{ background: '#ffffff', padding: '16px', borderRadius: '16px', border: '1px solid rgba(30,108,240,0.08)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ fontSize: '11px', color: '#73849c', marginBottom: '6px' }}>OCR CLASSIFICATION FEED</div>
+                  <div style={{ fontSize: '13px', fontWeight: '800', color: '#1e6cf0', marginBottom: '4px' }}>OCR Accuracy: 99.4%</div>
+                  <p style={{ fontSize: '11px', color: '#40516b', margin: 0, lineHeight: '1.4' }}>
+                    DeepNLP agent successfully mapped 14 named entities and parsed the compliance schedule for automatic ledger auditing.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {activeShowcase === 'healthcare' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
+                <div>
+                  <h5 style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', marginBottom: '8px' }}>Calculated Risk Tendency Coefficients</h5>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', justifyItems: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#40516b', width: '120px' }}>Cardiopathic Risk</span>
+                      <div style={{ flex: 1, height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden', marginRight: '10px' }}>
+                        <div style={{ width: '45%', height: '100%', background: '#f59e0b' }} />
+                      </div>
+                      <strong style={{ fontSize: '11px', color: '#f59e0b' }}>0.45</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyItems: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#40516b', width: '120px' }}>Diabetes Mellitus</span>
+                      <div style={{ flex: 1, height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden', marginRight: '10px' }}>
+                        <div style={{ width: '15%', height: '100%', background: '#10b981' }} />
+                      </div>
+                      <strong style={{ fontSize: '11px', color: '#10b981' }}>0.15</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyItems: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '12px', color: '#40516b', width: '120px' }}>ICU Readmission</span>
+                      <div style={{ flex: 1, height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden', marginRight: '10px' }}>
+                        <div style={{ width: '60%', height: '100%', background: '#ef4444' }} />
+                      </div>
+                      <strong style={{ fontSize: '11px', color: '#ef4444' }}>0.60</strong>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ background: '#ffffff', padding: '16px', borderRadius: '16px', border: '1px solid rgba(30,108,240,0.08)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ fontSize: '11px', color: '#73849c', marginBottom: '6px' }}>CLINICAL STRATIFICATION ADVICE</div>
+                  <div style={{ fontSize: '12px', fontWeight: '700', color: '#ef4444', marginBottom: '4px' }}>⚠ Patient Readmission Alert</div>
+                  <p style={{ fontSize: '11px', color: '#40516b', margin: 0, lineHeight: '1.4' }}>
+                    Patient exhibits significant readmission indicators due to recent vital fluctuations.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </section>
