@@ -54,6 +54,7 @@ export default function LoginScreen({ onLogin, API_BASE }) {
   const [handle, setHandle] = useState('@admin_ops');
   const [selectedRole, setSelectedRole] = useState(ROLES[0]);
   const [activeShowcase, setActiveShowcase] = useState(null);
+  const [ssoModal, setSsoModal] = useState(null); // 'google' | 'microsoft' | null
   const [showTokenDetails, setShowTokenDetails] = useState(false);
   const [phoneTime, setPhoneTime] = useState('9:41');
   const [authError, setAuthError] = useState('');
@@ -138,6 +139,54 @@ export default function LoginScreen({ onLogin, API_BASE }) {
         setLoading(false);
       }, 1500);
     }
+  };
+
+  const handleSSOLogin = async (roleId) => {
+    const roleObj = ROLES.find(r => r.id === roleId);
+    setAuthError('');
+    setAuthSuccess('');
+    setLoading(true);
+    setSsoModal(null);
+
+    const email = `${roleObj.id}@omnisync.ai`;
+    const password = `sso-pass-2026`;
+    const handle = `${roleObj.handle}_sso`;
+
+    try {
+      let response = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      let data = await response.json();
+
+      if (!response.ok || !data.success) {
+        response = await fetch(`${API_BASE}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, roleId: roleObj.id, handle })
+        });
+        data = await response.json();
+      }
+
+      if (response.ok && data.success) {
+        setAuthSuccess(`SSO Authenticated! Welcome ${roleObj.name}`);
+        setTimeout(() => {
+          onLogin({ role: data.user.role, token: data.token, email: data.user.email });
+          setLoading(false);
+        }, 1000);
+        return;
+      }
+    } catch (err) {
+      console.warn("Backend SSO auth failed, invoking local fallback...", err);
+    }
+
+    setAuthSuccess(`SSO Emulated! Welcome ${roleObj.name}`);
+    setTimeout(() => {
+      const token = generateJWT(roleObj);
+      onLogin({ role: roleObj, token, email });
+      setLoading(false);
+    }, 1200);
   };
 
   const currentNotifications = MOCK_NOTIFICATIONS[selectedRole.id] || [];
@@ -485,15 +534,15 @@ export default function LoginScreen({ onLogin, API_BASE }) {
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
               <button 
                 className="btn btn-secondary" 
-                style={{ flex: 1, fontSize: '11px', padding: '10px', borderRadius: '10px', background: '#ffffff', border: '1px solid rgba(30, 108, 240, 0.1)' }}
-                onClick={() => alert('SSO login simulated successfully.')}
+                style={{ flex: 1, fontSize: '11px', padding: '10px', borderRadius: '10px', background: '#ffffff', border: '1px solid rgba(30, 108, 240, 0.1)', cursor: 'pointer' }}
+                onClick={() => setSsoModal('google')}
               >
                 Google SSO
               </button>
               <button 
                 className="btn btn-secondary" 
-                style={{ flex: 1, fontSize: '11px', padding: '10px', borderRadius: '10px', background: '#ffffff', border: '1px solid rgba(30, 108, 240, 0.1)' }}
-                onClick={() => alert('Microsoft Azure SSO simulated.')}
+                style={{ flex: 1, fontSize: '11px', padding: '10px', borderRadius: '10px', background: '#ffffff', border: '1px solid rgba(30, 108, 240, 0.1)', cursor: 'pointer' }}
+                onClick={() => setSsoModal('microsoft')}
               >
                 Active Directory
               </button>
@@ -1076,26 +1125,225 @@ export default function LoginScreen({ onLogin, API_BASE }) {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Premium Multi-Column Footer */}
       <footer style={{
-        marginTop: 'auto',
-        padding: '24px 0',
+        marginTop: '60px',
+        padding: '60px 0 30px',
         borderTop: '1px solid rgba(30, 108, 240, 0.08)',
         width: '100%',
         maxWidth: '1100px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        zIndex: 5
+        zIndex: 5,
+        textAlign: 'left'
       }}>
-        <span style={{ fontSize: '12px', color: '#73849c' }}>
-          &copy; 2026 OmniSync AI Suite. Cryptographically Secure Portal.
-        </span>
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <span style={{ fontSize: '12px', color: '#73849c', cursor: 'pointer' }}>Terms of Use</span>
-          <span style={{ fontSize: '12px', color: '#73849c', cursor: 'pointer' }}>Privacy Policy</span>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1.5fr repeat(3, 1fr)',
+          gap: '40px',
+          marginBottom: '40px'
+        }}>
+          {/* Column 1: Brand & Status */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+              <div style={{
+                background: 'linear-gradient(135deg, #1e6cf0, #a855f7)',
+                width: '24px',
+                height: '24px',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: '700',
+                color: '#fff',
+                fontSize: '12px'
+              }}>O</div>
+              <span style={{ fontSize: '16px', fontWeight: '700', color: '#0f1a30' }}>OmniSync AI</span>
+            </div>
+            <p style={{ fontSize: '12px', color: '#73849c', lineHeight: '1.6', marginBottom: '16px' }}>
+              Next-generation multi-agent governance, legal analytics, and cardiometabolic intelligence.
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#10b981' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
+              <span>All Systems Operational</span>
+            </div>
+          </div>
+
+          {/* Column 2: Cognitive Suites */}
+          <div>
+            <h4 style={{ fontSize: '12px', fontWeight: '700', color: '#0f1a30', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>
+              Cognitive Suites
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px' }}>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>Public Sentiment Monitor</span>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>Judicial Records Engine</span>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>Cardiometabolic Analytics</span>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>Agronomic Resource Planner</span>
+            </div>
+          </div>
+
+          {/* Column 3: Resources */}
+          <div>
+            <h4 style={{ fontSize: '12px', fontWeight: '700', color: '#0f1a30', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>
+              Resources
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px' }}>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>API Documentation</span>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>System Telemetry</span>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>Zero-Trust Architecture</span>
+              <span style={{ color: '#73849c', cursor: 'pointer' }}>Developer Guides</span>
+            </div>
+          </div>
+
+          {/* Column 4: Compliance */}
+          <div>
+            <h4 style={{ fontSize: '12px', fontWeight: '700', color: '#0f1a30', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>
+              Security & Trust
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '11px', color: '#73849c' }}>
+              <span>✓ SOC-2 Type II Compliant</span>
+              <span>✓ HIPAA Data Protection</span>
+              <span>✓ ISO-27001 Certified</span>
+              <span>✓ 256-bit AES Hashed TLS</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{
+          borderTop: '1px solid rgba(30, 108, 240, 0.08)',
+          paddingTop: '20px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}>
+          <span style={{ fontSize: '12px', color: '#73849c' }}>
+            &copy; 2026 OmniSync AI Inc. All rights reserved. Cryptographically protected session logs.
+          </span>
+          <div style={{ display: 'flex', gap: '16px', fontSize: '12px' }}>
+            <span style={{ color: '#73849c', cursor: 'pointer' }}>Terms of Use</span>
+            <span style={{ color: '#73849c', cursor: 'pointer' }}>Privacy Policy</span>
+            <span style={{ color: '#73849c', cursor: 'pointer' }}>Cookie Settings</span>
+          </div>
         </div>
       </footer>
+
+      {/* SSO Chooser Modal Overlay */}
+      {ssoModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(15, 23, 42, 0.6)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+          animation: 'fade-in 0.2s ease-out'
+        }}>
+          <div className="glass-card" style={{
+            width: '420px',
+            background: '#ffffff',
+            borderRadius: '24px',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.15)',
+            padding: '32px',
+            color: '#0f1a30',
+            textAlign: 'center',
+            position: 'relative'
+          }}>
+            {/* Logo */}
+            {ssoModal === 'google' ? (
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                <svg viewBox="0 0 24 24" width="36" height="36" style={{ display: 'block' }}>
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', width: '32px', height: '32px' }}>
+                  <div style={{ background: '#f25022', width: '15px', height: '15px' }} />
+                  <div style={{ background: '#7fba00', width: '15px', height: '15px' }} />
+                  <div style={{ background: '#00a4ef', width: '15px', height: '15px' }} />
+                  <div style={{ background: '#ffb900', width: '15px', height: '15px' }} />
+                </div>
+              </div>
+            )}
+
+            <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '6px', color: '#0f1a30' }}>
+              Sign in with {ssoModal === 'google' ? 'Google' : 'Active Directory'}
+            </h3>
+            <p style={{ fontSize: '13px', color: '#73849c', marginBottom: '24px' }}>
+              Select a managed identity profile to connect to OmniSync
+            </p>
+
+            {/* List of profiles to click */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {ROLES.slice(0, 4).map(r => (
+                <div 
+                  key={r.id}
+                  onClick={() => handleSSOLogin(r.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px 16px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(0, 0, 0, 0.06)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    background: '#f8fafc'
+                  }}
+                  className="sso-profile-item"
+                >
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #1e6cf0, #a855f7)',
+                    color: '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: '700',
+                    fontSize: '12px'
+                  }}>
+                    {r.avatar}
+                  </div>
+                  <div style={{ textAlign: 'left', flex: 1 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30' }}>{r.name}</div>
+                    <div style={{ fontSize: '11px', color: '#73849c' }}>{r.id}@omnisync.ai</div>
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#1e6cf0', fontWeight: '600' }}>Connect</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Close button */}
+            <button 
+              onClick={() => setSsoModal(null)}
+              style={{
+                marginTop: '24px',
+                background: 'none',
+                border: 'none',
+                color: '#73849c',
+                fontSize: '12px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              Cancel Authorization
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
