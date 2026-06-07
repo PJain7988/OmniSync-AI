@@ -10,12 +10,12 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
-        sync: false       # set this in Render dashboard
+        sync: false
       - key: JWT_SECRET
-        sync: false       # set this in Render dashboard
+        sync: false
       - key: GEMINI_API_KEY
-        sync: false       # set this in Render dashboard
-    healthCheckPath: /api/status
+        sync: false
+    healthCheckPath: /api/health
 
   # ─── Frontend (Static Site via Vite build) ─────────────────────────────────
   - type: web
@@ -26,4 +26,4 @@ services:
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
-        sync: false       # set this to your backend Render URL e.g. https://omnisync-backend.onrender.com/api
+        value: https://omnisync-backend.onrender.com/api

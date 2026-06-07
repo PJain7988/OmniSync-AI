@@ -19,11 +19,9 @@ import LoginScreen from './components/LoginScreen';
 import AICopilot from './components/AICopilot';
 import NotificationHub from './components/NotificationHub';
 
-const API_BASE = import.meta.env.VITE_API_URL || (
-  window.location.origin.includes('5173')
-    ? 'http://localhost:5000/api'
-    : '/api'
-);
+// Production: set VITE_API_URL in Render dashboard to https://your-backend.onrender.com/api
+// Development: Vite proxies /api → localhost:5000 automatically (see vite.config.js)
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const DEFAULT_NOTIFICATIONS = [
   { id: 1, channel: 'push', message: 'OmniSync Security: New JWT session authorized.', time: 'Just now' },
