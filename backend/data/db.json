@@ -1,0 +1,119 @@
+{
+  "vitals": [
+    {
+      "patient_id": "M-001",
+      "timestamp": "2026-06-06T12:31:57.009Z",
+      "heart_rate": 80,
+      "spo2": 98,
+      "blood_pressure_systolic": 120,
+      "blood_pressure_diastolic": 80,
+      "temperature": 36.6,
+      "gestational_week": 22,
+      "risk_level": "Low",
+      "flags": [],
+      "recommendations": [
+        "Vitals are stable. Keep up with hydration and standard supplementation."
+      ],
+      "emergency": false,
+      "_id": "mq2c1oi99p47k"
+    }
+  ],
+  "kickCounts": [
+    {
+      "patient_id": "M-001",
+      "timestamp": "2026-06-06T12:32:01.651Z",
+      "kicks": 10,
+      "duration_minutes": 60,
+      "kicks_per_hour": 10,
+      "alert": true,
+      "message": "Reduced fetal movement. Please consult medical providers immediately.",
+      "_id": "mq2c1s388a9f6"
+    }
+  ],
+  "hazards": [
+    {
+      "id": "HAZ-9136",
+      "latitude": 28.590903760058232,
+      "longitude": 77.20296962064582,
+      "hazard_type": "pothole",
+      "severity": "Low",
+      "description": "Large pothole in the middle lane.",
+      "status": "Reported",
+      "votes": 0,
+      "created_at": "2026-06-06T12:32:23.873Z",
+      "image_url": null
+    }
+  ],
+  "supplyChain": [
+    {
+      "product_id": "PROD-9824",
+      "step_name": "Import Custom Cleared",
+      "handler": "Customs Authority",
+      "location": "New York Hub",
+      "timestamp": "2026-06-05T12:31:41.738Z",
+      "tx_hash": "0x650ee3916e3bd",
+      "_id": "mq2c1cq3fbv8c"
+    }
+  ],
+  "inventory": [
+    {
+      "sku": "SKU-001",
+      "name": "Premium Solar Panels",
+      "current_stock": 45,
+      "reorder_point": 20,
+      "max_stock": 100,
+      "unit_cost": 250,
+      "lead_time_days": 5
+    },
+    {
+      "sku": "SKU-002",
+      "name": "Smart Drip Irrigation Kit",
+      "current_stock": 12,
+      "reorder_point": 15,
+      "max_stock": 50,
+      "unit_cost": 89.9,
+      "lead_time_days": 3
+    },
+    {
+      "sku": "SKU-003",
+      "name": "Organic NPK Fertilizer (25kg)",
+      "current_stock": 80,
+      "reorder_point": 30,
+      "max_stock": 150,
+      "unit_cost": 15.5,
+      "lead_time_days": 4
+    },
+    {
+      "sku": "SKU-004",
+      "name": "IoT Soil Moisture Sensor",
+      "current_stock": 8,
+      "reorder_point": 10,
+      "max_stock": 30,
+      "unit_cost": 34.9,
+      "lead_time_days": 2
+    }
+  ],
+  "socialProfiles": [
+    {
+      "username": "user",
+      "reputation_score": 57,
+      "sentiment": "Mixed",
+      "risk_level": "High",
+      "summary": "AI Analysis for @user shows a dominant Mixed presence online. The profile regularly discusses technology and community-driven development. No critical red flags or toxic behaviors detected. Risk level is evaluated as High based on content safety standards.",
+      "_id": "mpz4fb4ubzshf"
+    }
+  ],
+  "courtOrders": [
+    {
+      "petitioner": "Astra Tech Corp",
+      "respondent": "State Regulatory Commission",
+      "case_number": "WP(C) No. 4930/2026",
+      "court": "High Court of Delhi",
+      "judge": "Hon'ble Mr. Justice Sanjay Kumar",
+      "verdict_date": "2026-05-18",
+      "key_verdict": "The Court ruled in favor of Astra Tech Corp, setting aside the arbitrary penalty order and directing the Commission to re-assess compliance standards within 60 days.",
+      "summary": "This legal matter addresses regulatory authority boundaries. The Court found a procedural violation of natural justice, as the respondent failed to provide a show-cause hearing before issuing the financial penalty.",
+      "_id": "mq2by83f9tfk1"
+    }
+  ]
+}
