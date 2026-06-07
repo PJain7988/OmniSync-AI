@@ -17,6 +17,20 @@ app.use(express.json());
 // Serving uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Middleware to ensure DB connection is initialized
+let dbConnected = false;
+app.use(async (req, res, next) => {
+  if (!dbConnected) {
+    try {
+      await connectDB();
+      dbConnected = true;
+    } catch (err) {
+      console.error('[Database] Connection middleware error:', err);
+    }
+  }
+  next();
+});
+
 // Mount Unified API Router
 app.use('/api', apiRouter);
 
@@ -73,7 +87,12 @@ wss.on('connection', (ws) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, async () => {
-  await connectDB();
-  console.log(`[Server] OmniSync server running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  server.listen(PORT, async () => {
+    await connectDB();
+    dbConnected = true;
+    console.log(`[Server] OmniSync server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

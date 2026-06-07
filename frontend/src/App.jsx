@@ -18,9 +18,11 @@ import LoginScreen from './components/LoginScreen';
 import AICopilot from './components/AICopilot';
 import NotificationHub from './components/NotificationHub';
 
-const API_BASE = window.location.origin.includes('5173')
-  ? 'http://localhost:5000/api'
-  : '/api';
+const API_BASE = import.meta.env.VITE_API_URL || (
+  window.location.origin.includes('5173')
+    ? 'http://localhost:5000/api'
+    : '/api'
+);
 
 const DEFAULT_NOTIFICATIONS = [
   { id: 1, channel: 'push', message: 'OmniSync Security: New JWT session authorized.', time: 'Just now' },
@@ -98,6 +100,8 @@ export default function App() {
     console.log(`[Notification Hub Alert] [${channel.toUpperCase()}] ${message}`);
   };
 
+  const [chatbaseLoaded, setChatbaseLoaded] = useState(false);
+
   // Load backend telemetry status
   useEffect(() => {
     fetch(`${API_BASE}/health`)
@@ -105,6 +109,67 @@ export default function App() {
       .then(data => setDbStatus(data))
       .catch(() => setDbStatus({ status: 'error', database: 'Offline' }));
   }, []);
+
+  // Load Chatbase Chatbot embed script
+  useEffect(() => {
+    if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+      window.chatbase = (...args) => {
+        if (!window.chatbase.q) {
+          window.chatbase.q = [];
+        }
+        window.chatbase.q.push(args);
+      };
+      window.chatbase = new Proxy(window.chatbase, {
+        get(target, prop) {
+          if (prop === "q") {
+            return target.q;
+          }
+          return (...args) => target(prop, ...args);
+        }
+      });
+    }
+
+    const onLoad = function() {
+      if (document.getElementById("4cFprWIbwnEWeyjcnzYWi")) {
+        setChatbaseLoaded(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://www.chatbase.co/embed.min.js";
+      script.id = "4cFprWIbwnEWeyjcnzYWi";
+      script.domain = "www.chatbase.co";
+      script.onload = () => {
+        setChatbaseLoaded(true);
+      };
+      script.onerror = () => {
+        console.warn("Failed to load Chatbase script. Custom Copilot will serve as fallback.");
+        setChatbaseLoaded(false);
+      };
+      document.body.appendChild(script);
+    };
+
+    if (document.readyState === "complete") {
+      onLoad();
+    } else {
+      window.addEventListener("load", onLoad);
+      return () => window.removeEventListener("load", onLoad);
+    }
+  }, []);
+
+  // Sync sidebar open state with Chatbase widget
+  useEffect(() => {
+    if (chatbaseLoaded && window.chatbase) {
+      try {
+        if (copilotOpen) {
+          window.chatbase("open");
+        } else {
+          window.chatbase("close");
+        }
+      } catch (e) {
+        console.error("Error toggling Chatbase widget:", e);
+      }
+    }
+  }, [copilotOpen, chatbaseLoaded]);
 
   return (
     <>
@@ -241,6 +306,7 @@ export default function App() {
         API_BASE={API_BASE} 
         isOpen={copilotOpen} 
         onClose={() => setCopilotOpen(false)} 
+        chatbaseLoaded={chatbaseLoaded}
       />
     </>
   );

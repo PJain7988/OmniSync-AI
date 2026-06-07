@@ -103,7 +103,9 @@ function getLocalCopilotFallback(query, context) {
   return `[OmniSync AI Copilot]: I've processed your query about "${query}" for the ${context.toUpperCase()} module. The system state is operational.`;
 }
 
-export default function AICopilot({ activeTab, API_BASE, isOpen, onClose }) {
+export default function AICopilot({ activeTab, API_BASE, isOpen, onClose, chatbaseLoaded }) {
+  if (chatbaseLoaded) return null;
+
   const [messages, setMessages] = useState([
     { role: 'assistant', text: "Hello! I am your OmniSync AI Copilot. I'm context-aware of your current workspace and ready to help. Ask me anything or choose a suggestion below!" }
   ]);
