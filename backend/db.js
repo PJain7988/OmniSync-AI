@@ -34,7 +34,6 @@ async function connectDB() {
   const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/omnisync';
   try {
     console.log(`[Database] Attempting to connect to MongoDB at ${mongoURI}...`);
-    // Connect with a 3-second timeout so it doesn't hang if Mongo isn't installed
     await mongoose.connect(mongoURI, {
       serverSelectionTimeoutMS: 3000
     });
@@ -46,7 +45,6 @@ async function connectDB() {
   }
 }
 
-// Local JSON DB Helper Methods to mimic mongoose models
 const localDB = {
   read: () => {
     try {
@@ -71,7 +69,6 @@ const localDB = {
     const data = localDB.read();
     if (!data[collectionName]) data[collectionName] = [];
     
-    // Check if item has ID, update or insert
     const idx = data[collectionName].findIndex(x => (x.id === item.id || x._id === item._id || (x.sku && x.sku === item.sku) || (x.product_id && x.product_id === item.product_id)));
     if (idx > -1) {
       data[collectionName][idx] = { ...data[collectionName][idx], ...item };
