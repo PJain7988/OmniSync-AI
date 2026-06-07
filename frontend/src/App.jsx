@@ -174,7 +174,7 @@ export default function App() {
   return (
     <>
       {!user ? (
-        <LoginScreen onLogin={handleLogin} />
+        <LoginScreen onLogin={handleLogin} API_BASE={API_BASE} />
       ) : (
         <div className="app-container" style={{ display: 'flex', width: '100vw', overflowX: 'hidden' }}>
           {/* Sidebar Navigation */}

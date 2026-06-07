@@ -14,8 +14,10 @@ const maternalRouter = require('./maternal');
 const hazardsRouter = require('./hazards');
 const signLanguageRouter = require('./signLanguage');
 const copilotRouter = require('./copilot');
+const authRouter = require('./auth');
 
 // Mount sub-routers under domain namespaces
+router.use('/auth', authRouter);
 router.use('/social-media', socialMediaRouter);
 router.use('/court-order', courtOrderRouter);
 router.use('/healthcare', healthcareRouter);

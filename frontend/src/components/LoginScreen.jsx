@@ -47,11 +47,26 @@ const MOCK_NOTIFICATIONS = {
   ]
 };
 
-export default function LoginScreen({ onLogin }) {
+export default function LoginScreen({ onLogin, API_BASE }) {
+  const [isRegister, setIsRegister] = useState(false);
+  const [email, setEmail] = useState('admin@omnisync.ai');
+  const [password, setPassword] = useState('password123');
+  const [handle, setHandle] = useState('@admin_ops');
   const [selectedRole, setSelectedRole] = useState(ROLES[0]);
-  const [password, setPassword] = useState('••••••••••••');
   const [showTokenDetails, setShowTokenDetails] = useState(false);
   const [phoneTime, setPhoneTime] = useState('9:41');
+  const [authError, setAuthError] = useState('');
+  const [authSuccess, setAuthSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Auto-populate defaults based on selected role
+  useEffect(() => {
+    setEmail(`${selectedRole.id}@omnisync.ai`);
+    setHandle(selectedRole.handle);
+    setPassword('password123');
+    setAuthError('');
+    setAuthSuccess('');
+  }, [selectedRole, isRegister]);
 
   // Update clock every minute
   useEffect(() => {
@@ -66,7 +81,7 @@ export default function LoginScreen({ onLogin }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Generate simulated JWT Token
+  // Generate simulated JWT Token (Local Fallback)
   const generateJWT = (role) => {
     const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" })).replace(/=/g, "");
     const payload = btoa(JSON.stringify({
@@ -81,9 +96,47 @@ export default function LoginScreen({ onLogin }) {
     return `${header}.${payload}.${signature}`;
   };
 
-  const handleSignIn = () => {
-    const token = generateJWT(selectedRole);
-    onLogin({ role: selectedRole, token });
+  const handleAuth = async () => {
+    setAuthError('');
+    setAuthSuccess('');
+    setLoading(true);
+
+    const endpoint = isRegister ? 'register' : 'login';
+    const payload = isRegister 
+      ? { email, password, roleId: selectedRole.id, handle }
+      : { email, password };
+
+    try {
+      const response = await fetch(`${API_BASE}/auth/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setAuthError(data.error || 'Authentication failed');
+        setLoading(false);
+        return;
+      }
+
+      setAuthSuccess(isRegister ? 'Account created! Redirecting...' : 'Login authorized!');
+      
+      setTimeout(() => {
+        onLogin({ role: data.user.role, token: data.token, email: data.user.email });
+        setLoading(false);
+      }, 1000);
+
+    } catch (err) {
+      console.warn("Backend auth failed, invoking local fallback...", err);
+      setAuthError('Server connection error. Invoking local cryptographic emulation...');
+      
+      setTimeout(() => {
+        const token = generateJWT(selectedRole);
+        onLogin({ role: selectedRole, token });
+        setLoading(false);
+      }, 1500);
+    }
   };
 
   const currentNotifications = MOCK_NOTIFICATIONS[selectedRole.id] || [];
@@ -157,7 +210,7 @@ export default function LoginScreen({ onLogin }) {
           <span style={{ fontSize: '13px', fontWeight: '600', color: '#40516b', cursor: 'pointer' }}>Compliance</span>
         </nav>
 
-        <button className="btn btn-primary" onClick={handleSignIn} style={{
+        <button className="btn btn-primary" onClick={handleAuth} style={{
           borderRadius: '50px',
           padding: '8px 20px',
           fontSize: '12px',
@@ -237,36 +290,60 @@ export default function LoginScreen({ onLogin }) {
               <Shield size={18} style={{ color: '#1e6cf0' }} /> Workspace Authorization
             </h3>
 
-            <div className="form-group" style={{ marginBottom: '16px' }}>
-              <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
-                Operational Role profile
-              </label>
-              <select 
-                className="form-control" 
-                style={{ 
-                  width: '100%', 
-                  padding: '12px 14px', 
-                  borderRadius: '12px', 
-                  background: '#ffffff', 
-                  border: '1px solid rgba(30, 108, 240, 0.15)', 
-                  color: '#0f1a30',
-                  fontWeight: '600'
-                }}
-                value={selectedRole.id}
-                onChange={(e) => {
-                  const found = ROLES.find(r => r.id === e.target.value);
-                  setSelectedRole(found);
-                }}
+            {/* Toggle header between Sign In and Register */}
+            <div style={{ display: 'flex', borderBottom: '1px solid rgba(30, 108, 240, 0.12)', marginBottom: '20px' }}>
+              <button 
+                onClick={() => { setIsRegister(false); setAuthError(''); setAuthSuccess(''); }}
+                style={{ flex: 1, padding: '10px', background: 'none', border: 'none', borderBottom: !isRegister ? '2px solid #1e6cf0' : 'none', fontWeight: !isRegister ? '700' : '500', color: !isRegister ? '#1e6cf0' : '#73849c', cursor: 'pointer', fontSize: '13px', transition: 'all 0.2s ease' }}
               >
-                {ROLES.map(role => (
-                  <option key={role.id} value={role.id} style={{ background: '#ffffff', color: '#0f1a30' }}>
-                    {role.name} ({role.dept})
-                  </option>
-                ))}
-              </select>
+                Sign In
+              </button>
+              <button 
+                onClick={() => { setIsRegister(true); setAuthError(''); setAuthSuccess(''); }}
+                style={{ flex: 1, padding: '10px', background: 'none', border: 'none', borderBottom: isRegister ? '2px solid #1e6cf0' : 'none', fontWeight: isRegister ? '700' : '500', color: isRegister ? '#1e6cf0' : '#73849c', cursor: 'pointer', fontSize: '13px', transition: 'all 0.2s ease' }}
+              >
+                Register
+              </button>
             </div>
 
-            <div className="form-group" style={{ marginBottom: '20px' }}>
+            {/* Notifications and status alerts */}
+            {authError && (
+              <div style={{ padding: '10px 14px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.15)', borderRadius: '10px', color: '#ef4444', fontSize: '11px', fontWeight: '600', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <AlertCircle size={14} /> {authError}
+              </div>
+            )}
+            {authSuccess && (
+              <div style={{ padding: '10px 14px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.15)', borderRadius: '10px', color: '#10b981', fontSize: '11px', fontWeight: '600', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={14} /> {authSuccess}
+              </div>
+            )}
+
+            <div className="form-group" style={{ marginBottom: '14px' }}>
+              <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
+                Email Address
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type="email" 
+                  className="form-control" 
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px 14px 12px 38px', 
+                    borderRadius: '12px', 
+                    background: '#ffffff', 
+                    border: '1px solid rgba(30, 108, 240, 0.15)', 
+                    color: '#0f1a30',
+                    fontWeight: '600'
+                  }}
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+                <User size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
+              </div>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '14px' }}>
               <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
                 Secure Token Cryptographic Key
               </label>
@@ -276,18 +353,107 @@ export default function LoginScreen({ onLogin }) {
                   className="form-control" 
                   style={{ 
                     width: '100%', 
-                    padding: '12px 14px', 
+                    padding: '12px 14px 12px 38px', 
                     borderRadius: '12px', 
                     background: '#ffffff', 
                     border: '1px solid rgba(30, 108, 240, 0.15)', 
                     color: '#0f1a30' 
                   }}
+                  placeholder="Enter key..."
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
-                <Lock size={16} style={{ position: 'absolute', right: '14px', top: '14px', color: '#73849c' }} />
+                <Lock size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
               </div>
             </div>
+
+            {isRegister && (
+              <>
+                <div className="form-group" style={{ marginBottom: '14px' }}>
+                  <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
+                    System Handle
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      style={{ 
+                        width: '100%', 
+                        padding: '12px 14px 12px 38px', 
+                        borderRadius: '12px', 
+                        background: '#ffffff', 
+                        border: '1px solid rgba(30, 108, 240, 0.15)', 
+                        color: '#0f1a30' 
+                      }}
+                      placeholder="@handle"
+                      value={handle}
+                      onChange={e => setHandle(e.target.value)}
+                    />
+                    <Sparkles size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
+                  </div>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
+                    MERN Access Scope
+                  </label>
+                  <select 
+                    className="form-control" 
+                    style={{ 
+                      width: '100%', 
+                      padding: '12px 14px', 
+                      borderRadius: '12px', 
+                      background: '#ffffff', 
+                      border: '1px solid rgba(30, 108, 240, 0.15)', 
+                      color: '#0f1a30',
+                      fontWeight: '600'
+                    }}
+                    value={selectedRole.id}
+                    onChange={(e) => {
+                      const found = ROLES.find(r => r.id === e.target.value);
+                      setSelectedRole(found);
+                    }}
+                  >
+                    {ROLES.map(role => (
+                      <option key={role.id} value={role.id} style={{ background: '#ffffff', color: '#0f1a30' }}>
+                        {role.name} ({role.dept})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
+
+            {!isRegister && (
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
+                  Pre-config Profile Autofill
+                </label>
+                <select 
+                  className="form-control" 
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px 14px', 
+                    borderRadius: '12px', 
+                    background: '#ffffff', 
+                    border: '1px solid rgba(30, 108, 240, 0.15)', 
+                    color: '#0f1a30',
+                    fontWeight: '600'
+                  }}
+                  value={selectedRole.id}
+                  onChange={(e) => {
+                    const found = ROLES.find(r => r.id === e.target.value);
+                    setSelectedRole(found);
+                  }}
+                >
+                  {ROLES.map(role => (
+                    <option key={role.id} value={role.id} style={{ background: '#ffffff', color: '#0f1a30' }}>
+                      {role.name} ({role.dept})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <button 
               className="btn btn-primary" 
@@ -305,11 +471,13 @@ export default function LoginScreen({ onLogin }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 4px 15px rgba(30, 108, 240, 0.25)'
+                boxShadow: '0 4px 15px rgba(30, 108, 240, 0.25)',
+                opacity: loading ? 0.7 : 1
               }}
-              onClick={handleSignIn}
+              onClick={handleAuth}
+              disabled={loading}
             >
-              Pre-Subscribe & Authorize <ArrowRight size={16} />
+              {loading ? 'Processing Cryptography...' : (isRegister ? 'Register & Authorize' : 'Authorize Session')} <ArrowRight size={16} />
             </button>
 
             {/* Quick SSO buttons */}
