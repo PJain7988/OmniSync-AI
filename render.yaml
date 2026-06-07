@@ -1,0 +1,29 @@
+services:
+  # ─── Backend API (Node/Express) ────────────────────────────────────────────
+  - type: web
+    name: omnisync-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false       # set this in Render dashboard
+      - key: JWT_SECRET
+        sync: false       # set this in Render dashboard
+      - key: GEMINI_API_KEY
+        sync: false       # set this in Render dashboard
+    healthCheckPath: /api/status
+
+  # ─── Frontend (Static Site via Vite build) ─────────────────────────────────
+  - type: web
+    name: omnisync-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false       # set this to your backend Render URL e.g. https://omnisync-backend.onrender.com/api
