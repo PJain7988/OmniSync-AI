@@ -106,140 +106,142 @@ export default function App() {
       .catch(() => setDbStatus({ status: 'error', database: 'Offline' }));
   }, []);
 
-  if (!user) {
-    return <LoginScreen onLogin={handleLogin} />;
-  }
-
   return (
-    <div className="app-container" style={{ display: 'flex', width: '100vw', overflowX: 'hidden' }}>
-      {/* Sidebar Navigation */}
-      <Sidebar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        dbStatus={dbStatus} 
-        user={user}
-        onLogout={handleLogout}
-        toggleCopilot={() => setCopilotOpen(!copilotOpen)}
-        toggleNotifications={() => setNotificationsOpen(!notificationsOpen)}
-        hasNotifications={notifications.length > 0}
-        theme={theme}
-        toggleTheme={toggleTheme}
-      />
+    <>
+      {!user ? (
+        <LoginScreen onLogin={handleLogin} />
+      ) : (
+        <div className="app-container" style={{ display: 'flex', width: '100vw', overflowX: 'hidden' }}>
+          {/* Sidebar Navigation */}
+          <Sidebar 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+            dbStatus={dbStatus} 
+            user={user}
+            onLogout={handleLogout}
+            toggleCopilot={() => setCopilotOpen(!copilotOpen)}
+            toggleNotifications={() => setNotificationsOpen(!notificationsOpen)}
+            hasNotifications={notifications.length > 0}
+            theme={theme}
+            toggleTheme={toggleTheme}
+          />
 
-      {/* Main Panel Viewport */}
-      <main className="main-content" style={{ flex: 1, padding: '30px', position: 'relative', overflowY: 'auto', maxHeight: '100vh', transition: 'margin-right 0.3s ease' }}>
-        <ErrorBoundary>
-          {activeTab === 'dashboard' && (
-            <DashboardOverview setActiveTab={setActiveTab} />
+          {/* Main Panel Viewport */}
+          <main className="main-content" style={{ flex: 1, padding: '30px', position: 'relative', overflowY: 'auto', maxHeight: '100vh', transition: 'margin-right 0.3s ease' }}>
+            <ErrorBoundary>
+              {activeTab === 'dashboard' && (
+                <DashboardOverview setActiveTab={setActiveTab} />
+              )}
+
+              {activeTab === 'social-media' && (
+                <SocialAnalyzer API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'court-order' && (
+                <CourtExtractor API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'healthcare' && (
+                <HealthcareAnalytics API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'farming' && (
+                <SustainableFarming API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'retail' && (
+                <InventoryManager API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'interior' && (
+                <InteriorDesigner API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'supply-chain' && (
+                <SupplyChainTracker API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'maternal' && (
+                <MaternalMonitor API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'hazards' && (
+                <RoadHazardReporter API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+
+              {activeTab === 'sign-language' && (
+                <SignLanguageTranslator API_BASE={API_BASE} triggerAlert={triggerNotification} />
+              )}
+            </ErrorBoundary>
+          </main>
+
+          {/* Persistent Floating Alert Hub */}
+          {notificationsOpen && (
+            <NotificationHub 
+              notifications={notifications} 
+              onClose={() => setNotificationsOpen(false)}
+              onClear={() => setNotifications([])}
+            />
           )}
 
-          {activeTab === 'social-media' && (
-            <SocialAnalyzer API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
+          {/* Floating Toast alerts container */}
+          <div className="toast-container" style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            zIndex: 99999,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            maxWidth: '350px',
+            width: '100%',
+            pointerEvents: 'none'
+          }}>
+            {toasts.map(t => (
+              <div 
+                key={t.id} 
+                className="toast-message glass-card" 
+                style={{
+                  padding: '14px 16px',
+                  borderRadius: '12px',
+                  borderLeft: '4px solid ' + (
+                    t.channel === 'whatsapp' ? 'var(--accent-emerald)' : 
+                    t.channel === 'sms' ? 'var(--accent-cyan)' :
+                    t.channel === 'email' ? 'var(--accent-purple)' : 'var(--accent-blue)'
+                  ),
+                  background: 'var(--bg-secondary)',
+                  boxShadow: 'var(--shadow-card)',
+                  pointerEvents: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--accent-cyan)' }}>
+                    {t.channel} Notification
+                  </span>
+                  <button 
+                    onClick={() => setToasts(prev => prev.filter(x => x.id !== t.id))}
+                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '11px' }}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <p style={{ fontSize: '12px', color: 'var(--text-primary)', margin: 0 }}>{t.message}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-          {activeTab === 'court-order' && (
-            <CourtExtractor API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'healthcare' && (
-            <HealthcareAnalytics API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'farming' && (
-            <SustainableFarming API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'retail' && (
-            <InventoryManager API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'interior' && (
-            <InteriorDesigner API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'supply-chain' && (
-            <SupplyChainTracker API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'maternal' && (
-            <MaternalMonitor API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'hazards' && (
-            <RoadHazardReporter API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-
-          {activeTab === 'sign-language' && (
-            <SignLanguageTranslator API_BASE={API_BASE} triggerAlert={triggerNotification} />
-          )}
-        </ErrorBoundary>
-      </main>
-
-      {/* Persistent Floating Copilot */}
+      {/* Global Persistent Floating Chatbase Copilot Chatbot */}
       <AICopilot 
-        activeTab={activeTab} 
+        activeTab={user ? activeTab : 'login'} 
         API_BASE={API_BASE} 
         isOpen={copilotOpen} 
         onClose={() => setCopilotOpen(false)} 
       />
-
-      {/* Persistent Floating Alert Hub */}
-      {notificationsOpen && (
-        <NotificationHub 
-          notifications={notifications} 
-          onClose={() => setNotificationsOpen(false)}
-          onClear={() => setNotifications([])}
-        />
-      )}
-
-      {/* Floating Toast alerts container */}
-      <div className="toast-container" style={{
-        position: 'fixed',
-        bottom: '24px',
-        right: '24px',
-        zIndex: 99999,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        maxWidth: '350px',
-        width: '100%',
-        pointerEvents: 'none'
-      }}>
-        {toasts.map(t => (
-          <div 
-            key={t.id} 
-            className="toast-message glass-card" 
-            style={{
-              padding: '14px 16px',
-              borderRadius: '12px',
-              borderLeft: '4px solid ' + (
-                t.channel === 'whatsapp' ? 'var(--accent-emerald)' : 
-                t.channel === 'sms' ? 'var(--accent-cyan)' :
-                t.channel === 'email' ? 'var(--accent-purple)' : 'var(--accent-blue)'
-              ),
-              background: 'var(--bg-secondary)',
-              boxShadow: 'var(--shadow-card)',
-              pointerEvents: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--accent-cyan)' }}>
-                {t.channel} Notification
-              </span>
-              <button 
-                onClick={() => setToasts(prev => prev.filter(x => x.id !== t.id))}
-                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '11px' }}
-              >
-                ✕
-              </button>
-            </div>
-            <p style={{ fontSize: '12px', color: 'var(--text-primary)', margin: 0 }}>{t.message}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
