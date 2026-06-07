@@ -282,27 +282,41 @@ export default function LoginScreen({ onLogin, API_BASE }) {
             fontSize: '11px', 
             fontWeight: '700', 
             textTransform: 'uppercase', 
-            letterSpacing: '2px', 
-            color: '#1e6cf0',
-            marginBottom: '12px',
-            display: 'block' 
+            letterSpacing: '3px', 
+            color: '#1558d6',
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
           }}>
-            Identity Access & Synchronization
+            <span style={{ width: '24px', height: '2px', background: '#1558d6', display: 'inline-block', borderRadius: '2px' }} />
+            Enterprise AI Platform
           </span>
           <h1 style={{ 
-            fontSize: '44px', 
-            fontWeight: '800', 
-            color: '#0f1a30', 
-            lineHeight: '1.15', 
-            marginBottom: '20px',
-            letterSpacing: '-1px' 
+            fontSize: '48px', 
+            fontWeight: '900', 
+            color: '#0d1b2e', 
+            lineHeight: '1.1', 
+            marginBottom: '22px',
+            letterSpacing: '-2px',
+            fontFamily: 'Inter, sans-serif'
           }}>
-            Security That Acts <br/>
-            Before It's Too Late
+            Unified Intelligence.<br/>
+            <span style={{ background: 'linear-gradient(135deg, #1558d6, #6d28d9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Zero Compromise.</span>
           </h1>
-          <p style={{ fontSize: '15px', color: '#40516b', marginBottom: '24px', lineHeight: '1.5' }}>
-            OmniSync converges 10 smart agents under cryptographically authorized MERN credentials. Verify token structures in real time below.
+          <p style={{ fontSize: '15px', color: '#3d5068', marginBottom: '28px', lineHeight: '1.7', maxWidth: '480px', fontWeight: '400' }}>
+            OmniSync AI brings 10 specialized cognitive agents under a single RBAC-secured gateway. Role-based access, JWT-signed sessions, and real-time telemetry — all in one platform.
           </p>
+
+          {/* Live Stats Bar */}
+          <div style={{ display: 'flex', gap: '24px', marginBottom: '28px', flexWrap: 'wrap' }}>
+            {[['10', 'AI Agents'], ['6', 'Access Roles'], ['99.9%', 'Uptime SLA'], ['256-bit', 'Encryption']].map(([val, label]) => (
+              <div key={label} style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: '22px', fontWeight: '800', color: '#0d1b2e', letterSpacing: '-0.5px', lineHeight: 1 }}>{val}</div>
+                <div style={{ fontSize: '11px', color: '#6b7fa0', fontWeight: '600', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</div>
+              </div>
+            ))}
+          </div>
 
           {/* Marquee Pill Bar */}
           <div className="feature-marquee-container">
@@ -328,17 +342,22 @@ export default function LoginScreen({ onLogin, API_BASE }) {
 
           {/* Interactive Console Card */}
           <div className="glass-card" style={{
-            background: 'rgba(255, 255, 255, 0.75)',
-            border: '1px solid rgba(30, 108, 240, 0.12)',
+            background: '#ffffff',
+            border: '1px solid rgba(15, 98, 230, 0.10)',
             borderRadius: '24px',
-            padding: '28px',
-            boxShadow: '0 12px 40px rgba(13, 23, 46, 0.04)',
-            backdropFilter: 'blur(10px)',
+            padding: '32px',
+            boxShadow: '0 24px 64px rgba(10, 20, 60, 0.08), 0 4px 16px rgba(10, 20, 60, 0.04)',
             marginBottom: '24px'
           }}>
-            <h3 style={{ fontSize: '18px', color: '#0f1a30', marginBottom: '16px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Shield size={18} style={{ color: '#1e6cf0' }} /> Workspace Authorization
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid rgba(15, 98, 230, 0.08)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #1558d6, #6d28d9)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(21, 88, 214, 0.25)' }}>
+                <Shield size={16} style={{ color: '#fff' }} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '16px', color: '#0d1b2e', fontWeight: '800', margin: 0, letterSpacing: '-0.3px' }}>Secure Access Portal</h3>
+                <p style={{ fontSize: '11px', color: '#6b7fa0', margin: 0, marginTop: '2px' }}>JWT-signed · PBKDF2-SHA512 · Zero-Trust</p>
+              </div>
+            </div>
 
             {/* Toggle header between Sign In and Register */}
             <div style={{ display: 'flex', borderBottom: '1px solid rgba(30, 108, 240, 0.12)', marginBottom: '20px' }}>
@@ -643,11 +662,10 @@ export default function LoginScreen({ onLogin, API_BASE }) {
         opacity: 0.5,
         zIndex: 5
       }}>
-        <span style={{ fontSize: '10px', fontWeight: '800', color: '#73849c', letterSpacing: '2px' }}>ENTERPRISE SYNC PARTNERS:</span>
-        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>◆ NEXUS CAPITAL</span>
-        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>⬢ CYBERDYNE HEALTH</span>
-        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>▲ APEX DIGITAL</span>
-        <span style={{ fontSize: '13px', fontWeight: '700', color: '#0f1a30', letterSpacing: '1px' }}>■ VANGUARD SYSTEMS</span>
+        <span style={{ fontSize: '10px', fontWeight: '700', color: '#6b7fa0', letterSpacing: '2.5px', textTransform: 'uppercase' }}>Trusted by enterprise teams at</span>
+        {['◆ NEXUS CAPITAL', '⬢ HEALTHSYNC', '▲ APEX DIGITAL', '■ VANGUARD SYS', '● CIVIC LABS'].map(p => (
+          <span key={p} style={{ fontSize: '12px', fontWeight: '700', color: '#3d5068', letterSpacing: '0.5px', opacity: 0.7 }}>{p}</span>
+        ))}
       </div>
 
       {/* JWT Token Visualizer Panel below */}
@@ -1045,44 +1063,42 @@ export default function LoginScreen({ onLogin, API_BASE }) {
           Operations Architecture
         </span>
         <h2 style={{ 
-          fontSize: '28px', 
+          fontSize: '30px', 
           fontWeight: '800', 
-          color: '#0f1a30', 
+          color: '#0d1b2e', 
           marginBottom: '32px',
-          letterSpacing: '-0.5px' 
+          letterSpacing: '-0.8px' 
         }}>
-          How Deterrence Works: A Step-By-Step Guide
+          How the Platform Works
         </h2>
 
         <div className="step-guide-grid">
-          {/* Step 1 */}
           <div className="step-card">
-            <div className="step-card-num">01</div>
-            <div className="step-card-title">SUB-AGENT LOGIN</div>
+            <div className="step-card-num" style={{ fontFamily: 'JetBrains Mono, monospace' }}>01</div>
+            <div className="step-card-title">IDENTITY VERIFICATION</div>
             <p className="step-card-text">
-              Select your specific operational profile roles. Digital signatures authorize access to sandboxed module telemetry interfaces.
+              Select your operational role. JWT tokens are cryptographically signed and scoped to your institutional access level.
             </p>
           </div>
 
-          {/* Step 2 */}
           <div className="step-card" style={{
-            background: 'linear-gradient(135deg, #1e40af 0%, #0f172a 100%)',
+            background: 'linear-gradient(140deg, #1558d6 0%, #0d1b2e 100%)',
             border: 'none',
-            color: '#ffffff'
+            color: '#ffffff',
+            boxShadow: '0 20px 40px rgba(21, 88, 214, 0.2)'
           }}>
-            <div className="step-card-num" style={{ color: 'rgba(255,255,255,0.15)' }}>02</div>
+            <div className="step-card-num" style={{ color: 'rgba(255,255,255,0.12)', fontFamily: 'JetBrains Mono, monospace' }}>02</div>
             <div className="step-card-title" style={{ color: '#ffffff' }}>TELEMETRY HARVESTING</div>
-            <p className="step-card-text" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              Active sensors pull road hazards, cardiac rates, agronomy moisture levels, and blockchain inventory structures to standard state pools.
+            <p className="step-card-text" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              Active sensors pull road hazards, cardiac rates, agronomic moisture, and blockchain inventory structures in real time.
             </p>
           </div>
 
-          {/* Step 3 */}
           <div className="step-card">
-            <div className="step-card-num">03</div>
-            <div className="step-card-title">CRITICAL RESPONSES</div>
+            <div className="step-card-num" style={{ fontFamily: 'JetBrains Mono, monospace' }}>03</div>
+            <div className="step-card-title">AUTOMATED RESPONSES</div>
             <p className="step-card-text">
-              Instantly broadcast alerts via WhatsApp, SMS, or Push notifications using the multi-channel fallback messaging architecture.
+              Instantly broadcast alerts via WhatsApp, SMS, and Push using multi-channel fallback messaging architecture.
             </p>
           </div>
         </div>
@@ -1121,8 +1137,8 @@ export default function LoginScreen({ onLogin, API_BASE }) {
               }}>O</div>
               <span style={{ fontSize: '16px', fontWeight: '700', color: '#0f1a30' }}>OmniSync AI</span>
             </div>
-            <p style={{ fontSize: '12px', color: '#73849c', lineHeight: '1.6', marginBottom: '16px' }}>
-              Next-generation multi-agent governance, legal analytics, and cardiometabolic intelligence.
+            <p style={{ fontSize: '12px', color: '#6b7fa0', lineHeight: '1.7', marginBottom: '16px', maxWidth: '240px' }}>
+              Enterprise-grade AI platform unifying 10 cognitive agents under one cryptographically secured gateway.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#10b981' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
@@ -1161,11 +1177,12 @@ export default function LoginScreen({ onLogin, API_BASE }) {
             <h4 style={{ fontSize: '12px', fontWeight: '700', color: '#0f1a30', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>
               Security & Trust
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '11px', color: '#73849c' }}>
-              <span>✓ SOC-2 Type II Compliant</span>
-              <span>✓ HIPAA Data Protection</span>
-              <span>✓ ISO-27001 Certified</span>
-              <span>✓ 256-bit AES Hashed TLS</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '11px' }}>
+              {['SOC-2 Type II Compliant', 'HIPAA Data Protection', 'ISO-27001 Certified', '256-bit AES + TLS 1.3'].map(item => (
+                <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#3d5068' }}>
+                  <span style={{ color: '#059669', fontWeight: '700' }}>✓</span> {item}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -1180,13 +1197,16 @@ export default function LoginScreen({ onLogin, API_BASE }) {
           flexWrap: 'wrap',
           gap: '16px'
         }}>
-          <span style={{ fontSize: '12px', color: '#73849c' }}>
-            &copy; 2026 OmniSync AI Inc. All rights reserved. Cryptographically protected session logs.
+          <span style={{ fontSize: '12px', color: '#6b7fa0' }}>
+            &copy; 2026 OmniSync AI Inc. All rights reserved.
           </span>
-          <div style={{ display: 'flex', gap: '16px', fontSize: '12px' }}>
-            <span style={{ color: '#73849c', cursor: 'pointer' }}>Terms of Use</span>
-            <span style={{ color: '#73849c', cursor: 'pointer' }}>Privacy Policy</span>
-            <span style={{ color: '#73849c', cursor: 'pointer' }}>Cookie Settings</span>
+          <div style={{ display: 'flex', gap: '20px', fontSize: '12px' }}>
+            {['Terms of Use', 'Privacy Policy', 'Cookie Settings'].map(link => (
+              <span key={link} style={{ color: '#6b7fa0', cursor: 'pointer', transition: 'color 0.2s' }}
+                onMouseEnter={e => e.target.style.color='#1558d6'}
+                onMouseLeave={e => e.target.style.color='#6b7fa0'}
+              >{link}</span>
+            ))}
           </div>
         </div>
       </footer>
