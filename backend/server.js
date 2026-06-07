@@ -21,6 +21,17 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Mount Unified API Router
 app.use('/api', apiRouter);
 
+// ── Serve built React frontend in production ──────────────────────────────
+const FRONTEND_DIST = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(FRONTEND_DIST)) {
+  app.use(express.static(FRONTEND_DIST));
+  // SPA fallback — return index.html for any non-API route
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
+  });
+  console.log('[Server] Serving frontend from:', FRONTEND_DIST);
+}
+
 // Create HTTP Server & WebSocket Server
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
