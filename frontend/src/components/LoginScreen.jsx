@@ -368,64 +368,58 @@ export default function LoginScreen({ onLogin, API_BASE }) {
               </div>
             )}
 
-            <div className="form-group" style={{ marginBottom: '14px' }}>
-              <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
-                Email Address
-              </label>
-              <div style={{ position: 'relative' }}>
-                <input 
-                  type="email" 
-                  className="form-control" 
-                  style={{ 
-                    width: '100%', 
-                    padding: '12px 14px 12px 38px', 
-                    borderRadius: '12px', 
-                    background: '#ffffff', 
-                    border: '1px solid rgba(30, 108, 240, 0.15)', 
-                    color: '#0f1a30',
-                    fontWeight: '600'
-                  }}
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                />
-                <User size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
+            {isRegister ? (
+              <div style={{
+                padding: '24px 20px',
+                background: 'rgba(30, 108, 240, 0.04)',
+                border: '1px dashed rgba(30, 108, 240, 0.25)',
+                borderRadius: '16px',
+                textAlign: 'center',
+                color: '#40516b',
+                marginBottom: '20px'
+              }}>
+                <div style={{ fontSize: '36px', marginBottom: '12px' }}>🔒</div>
+                <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#0f1a30', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Administrator Provisioning Required
+                </h4>
+                <p style={{ fontSize: '12px', color: '#73849c', lineHeight: '1.6', margin: 0 }}>
+                  Self-registration is locked to protect platform integrity. Contact a System Administrator to request account credentials.
+                </p>
               </div>
-            </div>
-
-            <div className="form-group" style={{ marginBottom: '14px' }}>
-              <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
-                Secure Token Cryptographic Key
-              </label>
-              <div style={{ position: 'relative' }}>
-                <input 
-                  type="password" 
-                  className="form-control" 
-                  style={{ 
-                    width: '100%', 
-                    padding: '12px 14px 12px 38px', 
-                    borderRadius: '12px', 
-                    background: '#ffffff', 
-                    border: '1px solid rgba(30, 108, 240, 0.15)', 
-                    color: '#0f1a30' 
-                  }}
-                  placeholder="Enter key..."
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                />
-                <Lock size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
-              </div>
-            </div>
-
-            {isRegister && (
+            ) : (
               <>
                 <div className="form-group" style={{ marginBottom: '14px' }}>
                   <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
-                    System Handle
+                    Email Address
                   </label>
                   <div style={{ position: 'relative' }}>
                     <input 
-                      type="text" 
+                      type="email" 
+                      className="form-control" 
+                      style={{ 
+                        width: '100%', 
+                        padding: '12px 14px 12px 38px', 
+                        borderRadius: '12px', 
+                        background: '#ffffff', 
+                        border: '1px solid rgba(30, 108, 240, 0.15)', 
+                        color: '#0f1a30',
+                        fontWeight: '600'
+                      }}
+                      placeholder="name@example.com"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                    />
+                    <User size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
+                  </div>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '14px' }}>
+                  <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
+                    Secure Token Cryptographic Key
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input 
+                      type="password" 
                       className="form-control" 
                       style={{ 
                         width: '100%', 
@@ -435,17 +429,17 @@ export default function LoginScreen({ onLogin, API_BASE }) {
                         border: '1px solid rgba(30, 108, 240, 0.15)', 
                         color: '#0f1a30' 
                       }}
-                      placeholder="@handle"
-                      value={handle}
-                      onChange={e => setHandle(e.target.value)}
+                      placeholder="Enter key..."
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
                     />
-                    <Sparkles size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
+                    <Lock size={16} style={{ position: 'absolute', left: '14px', top: '14px', color: '#73849c' }} />
                   </div>
                 </div>
 
                 <div className="form-group" style={{ marginBottom: '20px' }}>
                   <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
-                    MERN Access Scope
+                    Pre-config Profile Autofill
                   </label>
                   <select 
                     className="form-control" 
@@ -471,64 +465,33 @@ export default function LoginScreen({ onLogin, API_BASE }) {
                     ))}
                   </select>
                 </div>
-              </>
-            )}
 
-            {!isRegister && (
-              <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: '#73849c', fontWeight: '700' }}>
-                  Pre-config Profile Autofill
-                </label>
-                <select 
-                  className="form-control" 
+                <button 
+                  className="btn btn-primary" 
                   style={{ 
                     width: '100%', 
-                    padding: '12px 14px', 
+                    padding: '14px', 
                     borderRadius: '12px', 
-                    background: '#ffffff', 
-                    border: '1px solid rgba(30, 108, 240, 0.15)', 
-                    color: '#0f1a30',
-                    fontWeight: '600'
+                    fontSize: '14px', 
+                    fontWeight: '700',
+                    background: 'linear-gradient(135deg, #1e6cf0, #005eff)',
+                    color: '#ffffff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 15px rgba(30, 108, 240, 0.25)',
+                    opacity: loading ? 0.7 : 1
                   }}
-                  value={selectedRole.id}
-                  onChange={(e) => {
-                    const found = ROLES.find(r => r.id === e.target.value);
-                    setSelectedRole(found);
-                  }}
+                  onClick={handleAuth}
+                  disabled={loading}
                 >
-                  {ROLES.map(role => (
-                    <option key={role.id} value={role.id} style={{ background: '#ffffff', color: '#0f1a30' }}>
-                      {role.name} ({role.dept})
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  {loading ? 'Processing Cryptography...' : 'Authorize Session'} <ArrowRight size={16} />
+                </button>
+              </>
             )}
-
-            <button 
-              className="btn btn-primary" 
-              style={{ 
-                width: '100%', 
-                padding: '14px', 
-                borderRadius: '12px', 
-                fontSize: '14px', 
-                fontWeight: '700',
-                background: 'linear-gradient(135deg, #1e6cf0, #005eff)',
-                color: '#ffffff',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                boxShadow: '0 4px 15px rgba(30, 108, 240, 0.25)',
-                opacity: loading ? 0.7 : 1
-              }}
-              onClick={handleAuth}
-              disabled={loading}
-            >
-              {loading ? 'Processing Cryptography...' : (isRegister ? 'Register & Authorize' : 'Authorize Session')} <ArrowRight size={16} />
-            </button>
 
             {/* Quick SSO buttons */}
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>

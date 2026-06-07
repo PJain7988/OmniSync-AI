@@ -142,4 +142,88 @@ router.post('/login', async (req, res) => {
   }
 });
 
+async function getAllUsers() {
+  if (isUsingMongoDB()) {
+    return await User.find({}, { passwordHash: 0, salt: 0 });
+  } else {
+    return db.getCollection('users').map(({ passwordHash, salt, ...rest }) => rest);
+  }
+}
+
+// Middleware to verify Admin
+function verifyAdmin(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.status(401).json({ error: 'No authorization header provided' });
+  const token = authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'No token provided' });
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) throw new Error('Invalid JWT format');
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+    if (payload.role && payload.role.id === 'admin') {
+      req.adminUser = payload;
+      next();
+    } else {
+      return res.status(403).json({ error: 'Access restricted to administrators' });
+    }
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid or expired authorization token' });
+  }
+}
+
+// Get all users (Admin only)
+router.get('/users', verifyAdmin, async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    res.json({ success: true, users });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Create/Provision a new user (Admin only)
+router.post('/users/create', verifyAdmin, async (req, res) => {
+  const { email, password, roleId, handle } = req.body;
+  if (!email || !password || !roleId) {
+    return res.status(400).json({ error: 'Email, password and role are required' });
+  }
+
+  try {
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+
+    const selectedRole = ROLES_LIST.find(r => r.id === roleId) || ROLES_LIST[5];
+    const salt = generateSalt();
+    const passwordHash = hashPassword(password, salt);
+
+    const userData = {
+      email,
+      passwordHash,
+      salt,
+      role: {
+        id: selectedRole.id,
+        name: selectedRole.name,
+        dept: selectedRole.dept,
+        scope: selectedRole.scope,
+        handle: handle || `@${email.split('@')[0]}`,
+        avatar: selectedRole.avatar
+      }
+    };
+
+    const savedUser = await createUser(userData);
+
+    res.json({
+      success: true,
+      user: {
+        email: savedUser.email,
+        role: savedUser.role
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

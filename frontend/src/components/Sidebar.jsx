@@ -51,6 +51,11 @@ export default function Sidebar({ activeTab, setActiveTab, dbStatus, user, onLog
           <div className={`menu-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
             <Home size={18} /> Operations Hub
           </div>
+          {user && user.role.id === 'admin' && (
+            <div className={`menu-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')} style={{ borderLeft: '3px solid var(--accent-cyan)' }}>
+              <UserCheck size={18} style={{ color: 'var(--accent-cyan)' }} /> User Provisioner
+            </div>
+          )}
           <div className={`menu-item ${activeTab === 'social-media' ? 'active' : ''}`} onClick={() => setActiveTab('social-media')}>
             <Share2 size={18} /> Public Sentiment Monitor
           </div>

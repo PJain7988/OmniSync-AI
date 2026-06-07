@@ -13,6 +13,7 @@ import SupplyChainTracker from './components/SupplyChainTracker';
 import MaternalMonitor from './components/MaternalMonitor';
 import RoadHazardReporter from './components/RoadHazardReporter';
 import SignLanguageTranslator from './components/SignLanguageTranslator';
+import UserManager from './components/UserManager';
 
 import LoginScreen from './components/LoginScreen';
 import AICopilot from './components/AICopilot';
@@ -196,6 +197,10 @@ export default function App() {
             <ErrorBoundary>
               {activeTab === 'dashboard' && (
                 <DashboardOverview setActiveTab={setActiveTab} />
+              )}
+
+              {activeTab === 'users' && user && user.role.id === 'admin' && (
+                <UserManager API_BASE={API_BASE} triggerAlert={triggerNotification} />
               )}
 
               {activeTab === 'social-media' && (
