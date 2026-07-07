@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RefreshCw, Download, Sparkles, TrendingUp } from 'lucide-react';
 
 export default function SocialAnalyzer({ API_BASE, triggerAlert, openCopilot }) {
   const [socialUser, setSocialUser] = useState('');
   const [socialResult, setSocialResult] = useState(null);
   const [socialLoading, setSocialLoading] = useState(false);
+  const resultCache = useRef({});
   
   // Real-time toxicity stream tracker
   const [toxicityTrend, setToxicityTrend] = useState([15, 22, 18, 30, 24, 35, 20]);
@@ -18,6 +19,15 @@ export default function SocialAnalyzer({ API_BASE, triggerAlert, openCopilot }) 
 
   const triggerSocialAnalysis = async () => {
     if (!socialUser) return;
+    
+    // Return cached result if we already scanned this user
+    const cacheKey = socialUser.toLowerCase().trim();
+    if (resultCache.current[cacheKey]) {
+      setSocialResult(resultCache.current[cacheKey]);
+      triggerAlert('push', `OSINT Scan loaded from cache: @${socialUser}.`);
+      return;
+    }
+
     setSocialLoading(true);
     try {
       const response = await fetch(`${API_BASE}/social-media/analyze`, {
@@ -29,6 +39,9 @@ export default function SocialAnalyzer({ API_BASE, triggerAlert, openCopilot }) 
       
       // Inject simulated social influence score
       data.influence_score = Math.round(60 + Math.random() * 38);
+      
+      // Save to cache
+      resultCache.current[cacheKey] = data;
       setSocialResult(data);
       triggerAlert('push', `OSINT Scan complete: @${socialUser}. Score: ${data.reputation_score}.`);
     } catch (e) {
