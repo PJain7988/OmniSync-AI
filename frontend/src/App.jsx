@@ -202,7 +202,7 @@ export default function App() {
               )}
 
               {activeTab === 'social-media' && (
-                <SocialAnalyzer API_BASE={API_BASE} triggerAlert={triggerNotification} />
+                <SocialAnalyzer API_BASE={API_BASE} triggerAlert={triggerNotification} openCopilot={() => setCopilotOpen(true)} />
               )}
 
               {activeTab === 'court-order' && (

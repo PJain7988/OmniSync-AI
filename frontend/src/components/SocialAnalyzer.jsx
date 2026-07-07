@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, Download, Sparkles, TrendingUp } from 'lucide-react';
 
-export default function SocialAnalyzer({ API_BASE, triggerAlert }) {
+export default function SocialAnalyzer({ API_BASE, triggerAlert, openCopilot }) {
   const [socialUser, setSocialUser] = useState('');
   const [socialResult, setSocialResult] = useState(null);
   const [socialLoading, setSocialLoading] = useState(false);
@@ -179,7 +179,7 @@ Cryptographic Seal Hash: MD5-SH-8923489248234823
               <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px' }} onClick={handleDownloadPDF}>
                 <Download size={14} /> PDF Report
               </button>
-              <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', borderColor: 'var(--accent-purple)' }} onClick={() => alert('Open Copilot on the right panel to analyze this report.')}>
+              <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', borderColor: 'var(--accent-purple)' }} onClick={openCopilot}>
                 <Sparkles size={14} style={{ color: 'var(--accent-purple)' }} /> Ask Copilot
               </button>
             </div>
