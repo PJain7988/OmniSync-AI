@@ -20,6 +20,17 @@ export default function SocialAnalyzer({ API_BASE, triggerAlert, openCopilot }) 
   const triggerSocialAnalysis = async () => {
     if (!socialUser) return;
     
+    // Validate that the input is a proper URL
+    try {
+      new URL(socialUser);
+      if (!socialUser.startsWith('http://') && !socialUser.startsWith('https://')) {
+        throw new Error('Must include http/https');
+      }
+    } catch (err) {
+      triggerAlert('email', 'Error: Please provide a proper, valid URL link (e.g. https://twitter.com/username)');
+      return;
+    }
+
     // Return cached result if we already scanned this user
     const cacheKey = socialUser.toLowerCase().trim();
     if (resultCache.current[cacheKey]) {
@@ -102,11 +113,11 @@ Cryptographic Seal Hash: MD5-SH-8923489248234823
         <div className="glass-card" style={{ textAlign: 'left' }}>
           <h3 style={{ marginBottom: '14px', fontSize: '16px' }}>Scan Operations</h3>
           <div className="form-group">
-            <label>Target Social Handle</label>
+            <label>Target Social Profile URL</label>
             <div style={{ display: 'flex', gap: '12px' }}>
               <input
-                type="text"
-                placeholder="e.g. janesmith_dev"
+                type="url"
+                placeholder="e.g. https://twitter.com/janesmith"
                 className="form-control"
                 style={{ flex: 1 }}
                 value={socialUser}
