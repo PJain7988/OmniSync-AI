@@ -17,7 +17,7 @@ export default function SustainableFarming({ API_BASE, triggerAlert }) {
   const triggerFarmingAdvisor = async () => {
     setFarmingLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/farming/recommend`, {
+      const response = await fetch(`${API_BASE}/agriculture/recommendations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(soilData)
@@ -35,7 +35,7 @@ export default function SustainableFarming({ API_BASE, triggerAlert }) {
   const triggerLeafDisease = async () => {
     setLeafLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/farming/disease-detect`, { method: 'POST' });
+      const response = await fetch(`${API_BASE}/agriculture/disease-detection`, { method: 'POST' });
       const data = await response.json();
       setLeafDiseaseResult(data);
       triggerAlert('whatsapp', `Farming pathogen alert: Leaf diagnosed with early signs of ${data.disease}.`);

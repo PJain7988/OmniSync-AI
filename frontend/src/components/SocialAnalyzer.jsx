@@ -41,7 +41,7 @@ export default function SocialAnalyzer({ API_BASE, triggerAlert, openCopilot }) 
 
     setSocialLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/social-media/analyze`, {
+      const response = await fetch(`${API_BASE}/social-profiles/analysis`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: socialUser, platforms: ['twitter', 'reddit'] })

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { generateText } = require('../ai');
 
-router.post('/query', async (req, res) => {
+router.post('/queries', async (req, res) => {
   const { query, context, user } = req.body;
   if (!query) return res.status(400).json({ error: 'Query is required' });
 

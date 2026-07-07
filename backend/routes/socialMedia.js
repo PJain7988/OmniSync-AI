@@ -3,7 +3,8 @@ const router = express.Router();
 const { db } = require('../db');
 const { generateText } = require('../ai');
 
-router.post('/analyze', async (req, res) => {
+// Analyze OSINT data
+router.post('/analysis', async (req, res) => {
   const { username, platforms } = req.body;
   if (!username) return res.status(400).json({ error: 'Username is required' });
 

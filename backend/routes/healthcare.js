@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { generateText } = require('../ai');
 
-router.post('/predict', async (req, res) => {
+router.post('/patients/predictions', async (req, res) => {
   const patient = req.body;
   
   const age = parseFloat(patient.age) || 45;

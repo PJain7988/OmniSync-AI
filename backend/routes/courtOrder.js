@@ -13,7 +13,7 @@ if (!fs.existsSync(path.join(__dirname, '../uploads/'))) {
   fs.mkdirSync(path.join(__dirname, '../uploads/'), { recursive: true });
 }
 
-router.post('/extract', upload.single('file'), async (req, res) => {
+router.post('/extraction', upload.single('file'), async (req, res) => {
   let docText = req.body.text;
 
   if (req.file) {

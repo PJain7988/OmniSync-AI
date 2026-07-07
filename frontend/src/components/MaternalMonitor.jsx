@@ -15,12 +15,12 @@ export default function MaternalMonitor({ API_BASE, triggerAlert }) {
   const [emergencyContact, setEmergencyContact] = useState({ name: 'Mark Davis (Spouse)', phone: '+1 (555) 019-2834' });
 
   const loadHistory = () => {
-    fetch(`${API_BASE}/maternal/vitals/history/M-001`)
+    fetch(`${API_BASE}/healthcare/maternal/vitals/history/M-001`)
       .then(res => res.json())
       .then(data => setVitalsHistory(data))
       .catch(console.error);
 
-    fetch(`${API_BASE}/maternal/reminders/M-001`)
+    fetch(`${API_BASE}/healthcare/maternal/reminders/M-001`)
       .then(res => res.json())
       .then(data => setReminders(data))
       .catch(console.error);
@@ -40,7 +40,7 @@ export default function MaternalMonitor({ API_BASE, triggerAlert }) {
 
   const triggerVitalsSubmission = async () => {
     try {
-      const response = await fetch(`${API_BASE}/maternal/vitals`, {
+      const response = await fetch(`${API_BASE}/healthcare/maternal/vitals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: 'M-001', ...vitalsData })
@@ -59,7 +59,7 @@ export default function MaternalMonitor({ API_BASE, triggerAlert }) {
 
   const triggerLogKicks = async () => {
     try {
-      const response = await fetch(`${API_BASE}/maternal/kick-count`, {
+      const response = await fetch(`${API_BASE}/healthcare/maternal/kick-count`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patient_id: 'M-001', kicks: kickData.kicks, duration_minutes: kickData.duration_minutes })

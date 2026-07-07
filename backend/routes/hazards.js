@@ -12,7 +12,7 @@ if (!fs.existsSync(path.join(__dirname, '../uploads/'))) {
   fs.mkdirSync(path.join(__dirname, '../uploads/'), { recursive: true });
 }
 
-router.post('/report', upload.single('image'), (req, res) => {
+router.post('/', upload.single('image'), (req, res) => {
   const { latitude, longitude, description, hazard_type } = req.body;
   
   const lat = parseFloat(latitude) || (28.6 + (Math.random() - 0.5) * 0.1);
@@ -39,7 +39,7 @@ router.post('/report', upload.single('image'), (req, res) => {
   res.json({ success: true, report: newReport });
 });
 
-router.get('/list', (req, res) => {
+router.get('/', (req, res) => {
   let list = db.find('hazards');
   if (list.length === 0) {
     const mock = [
@@ -53,7 +53,7 @@ router.get('/list', (req, res) => {
   res.json(list);
 });
 
-router.post('/vote/:id', (req, res) => {
+router.post('/:id/votes', (req, res) => {
   const { id } = req.params;
   const item = db.findOne('hazards', x => x.id === id);
   if (!item) return res.status(404).json({ error: 'Report not found' });
@@ -62,7 +62,7 @@ router.post('/vote/:id', (req, res) => {
   res.json({ success: true, votes: item.votes });
 });
 
-router.patch('/status/:id', (req, res) => {
+router.patch('/:id/status', (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   const valid = ["Reported", "Acknowledged", "In Progress", "Fixed", "Closed"];

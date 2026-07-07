@@ -13,7 +13,7 @@ export default function RoadHazardReporter({ API_BASE, triggerAlert }) {
   const [isUploading, setIsUploading] = useState(false);
 
   const loadHazards = () => {
-    fetch(`${API_BASE}/hazards/list`)
+    fetch(`${API_BASE}/infrastructure/hazards`)
       .then(res => res.json())
       .then(data => setHazardList(data))
       .catch(console.error);
@@ -21,24 +21,20 @@ export default function RoadHazardReporter({ API_BASE, triggerAlert }) {
 
   useEffect(() => {
     loadHazards();
-  }, []);
+  }, [API_BASE]);
 
   const triggerSubmitHazard = async () => {
     setHazardLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/hazards/report`, {
+      const response = await fetch(`${API_BASE}/infrastructure/hazards`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newHazard)
       });
-      const data = await response.json();
-      if (data.success) {
-        setHazardList(prev => [data.report, ...prev]);
+      if (response.ok) {
+        triggerAlert('whatsapp', 'New hazard report successfully registered via citizen portal.');
         setNewHazard({ latitude: '', longitude: '', description: '', hazard_type: 'pothole' });
-        setRewardPoints(prev => prev + 20);
-        triggerAlert('push', `Civic Report: filed ${newHazard.hazard_type}. You earned +20 reward points!`);
-        setUploadedImage(null);
-        setCvAnalysis(null);
+        loadHazards();
       }
     } catch (e) {
       console.error(e);
@@ -49,11 +45,9 @@ export default function RoadHazardReporter({ API_BASE, triggerAlert }) {
 
   const handleUpvoteHazard = async (id) => {
     try {
-      const response = await fetch(`${API_BASE}/hazards/vote/${id}`, { method: 'POST' });
-      const data = await response.json();
-      if (data.success) {
-        setHazardList(prev => prev.map(x => x.id === id ? { ...x, votes: data.votes } : x));
-        triggerAlert('push', `Upvoted hazard report. Current vote count: ${data.votes}`);
+      const response = await fetch(`${API_BASE}/infrastructure/hazards/${id}/votes`, { method: 'POST' });
+      if (response.ok) {
+        loadHazards();
       }
     } catch (e) {
       console.error(e);
@@ -62,7 +56,7 @@ export default function RoadHazardReporter({ API_BASE, triggerAlert }) {
 
   const handleUpdateHazardStatus = async (id, status) => {
     try {
-      const response = await fetch(`${API_BASE}/hazards/status/${id}`, {
+      const response = await fetch(`${API_BASE}/infrastructure/hazards/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

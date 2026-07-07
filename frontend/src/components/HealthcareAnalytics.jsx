@@ -37,7 +37,7 @@ export default function HealthcareAnalytics({ API_BASE, triggerAlert }) {
   const triggerHealthPredict = async () => {
     setHealthLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/healthcare/predict`, {
+      const response = await fetch(`${API_BASE}/healthcare/patients/predictions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(patientData)

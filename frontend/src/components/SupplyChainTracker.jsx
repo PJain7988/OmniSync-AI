@@ -15,7 +15,7 @@ export default function SupplyChainTracker({ API_BASE, triggerAlert }) {
     if (!productId) return;
     setChainLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/supply-chain/track/${productId}`);
+      const response = await fetch(`${API_BASE}/logistics/shipments/${productId}`);
       const data = await response.json();
       setChainSteps(data);
       triggerAlert('push', `Logistics fetched for Blockchain Block ${productId}.`);
@@ -32,7 +32,7 @@ export default function SupplyChainTracker({ API_BASE, triggerAlert }) {
   const handleRegisterSupplyStep = async () => {
     if (!productId || !newStep.step_name) return;
     try {
-      const response = await fetch(`${API_BASE}/supply-chain/step`, {
+      const response = await fetch(`${API_BASE}/logistics/shipments/step`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product_id: productId, ...newStep })

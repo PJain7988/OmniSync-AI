@@ -16,27 +16,37 @@ const signLanguageRouter = require('./signLanguage');
 const copilotRouter = require('./copilot');
 const authRouter = require('./auth');
 
-// Mount sub-routers under domain namespaces
-router.use('/auth', authRouter);
-router.use('/social-media', socialMediaRouter);
-router.use('/court-order', courtOrderRouter);
-router.use('/healthcare', healthcareRouter);
-router.use('/farming', farmingRouter);
-router.use('/inventory', inventoryRouter);
-router.use('/interior', interiorRouter);
-router.use('/supply-chain', supplyChainRouter);
-router.use('/maternal', maternalRouter);
-router.use('/hazards', hazardsRouter);
-router.use('/sign-language', signLanguageRouter);
-router.use('/copilot', copilotRouter);
+// Create v1 router
+const v1Router = express.Router();
 
-// Central Health Check Endpoint
-router.get('/health', (req, res) => {
+// Mount sub-routers under domain namespaces on v1
+v1Router.use('/auth', authRouter);
+v1Router.use('/social-profiles', socialMediaRouter);
+v1Router.use('/legal/court-orders', courtOrderRouter);
+v1Router.use('/healthcare', healthcareRouter);
+v1Router.use('/agriculture', farmingRouter);
+v1Router.use('/logistics/inventory', inventoryRouter);
+v1Router.use('/interior', interiorRouter);
+v1Router.use('/logistics/shipments', supplyChainRouter);
+v1Router.use('/healthcare/maternal', maternalRouter);
+v1Router.use('/infrastructure/hazards', hazardsRouter);
+v1Router.use('/sign-language', signLanguageRouter);
+v1Router.use('/ai/copilot', copilotRouter);
+
+// Central Health Check Endpoint (on v1)
+v1Router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     database: isUsingMongoDB() ? 'MongoDB' : 'Local JSON File',
     timestamp: new Date().toISOString()
   });
 });
+
+// Mount v1 onto root router
+router.use('/v1', v1Router);
+
+// Fallback for root api (optional redirect or message)
+router.get('/', (req, res) => res.json({ message: 'Welcome to OmniSync API. Please use /api/v1' }));
+router.get('/health', (req, res) => res.redirect('/api/v1/health'));
 
 module.exports = router;

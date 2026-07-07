@@ -133,7 +133,7 @@ export default function AICopilot({ activeTab, API_BASE, isOpen, onClose, chatba
       const savedUser = localStorage.getItem('omnisync_user');
       const userObj = savedUser ? JSON.parse(savedUser) : null;
 
-      const response = await fetch(`${API_BASE}/copilot/query`, {
+      const response = await fetch(`${API_BASE}/ai/copilot/queries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: text, context: activeTab, user: userObj })

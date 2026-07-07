@@ -13,7 +13,7 @@ router.post('/item', (req, res) => {
   res.json(saved);
 });
 
-router.post('/optimize', async (req, res) => {
+router.post('/optimization', async (req, res) => {
   const items = db.find('inventory');
   
   const reports = items.map(item => {

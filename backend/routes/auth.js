@@ -182,7 +182,7 @@ router.get('/users', verifyAdmin, async (req, res) => {
 });
 
 // Create/Provision a new user (Admin only)
-router.post('/users/create', verifyAdmin, async (req, res) => {
+router.post('/users', verifyAdmin, async (req, res) => {
   const { email, password, roleId, handle } = req.body;
   if (!email || !password || !roleId) {
     return res.status(400).json({ error: 'Email, password and role are required' });

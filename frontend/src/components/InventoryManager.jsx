@@ -14,7 +14,7 @@ export default function InventoryManager({ API_BASE, triggerAlert }) {
   ]);
 
   const loadInventory = () => {
-    fetch(`${API_BASE}/inventory`)
+    fetch(`${API_BASE}/logistics/inventory`)
       .then(res => res.json())
       .then(data => setInventoryList(data))
       .catch(console.error);
@@ -27,7 +27,7 @@ export default function InventoryManager({ API_BASE, triggerAlert }) {
   const triggerInventoryOptimization = async () => {
     setRetailLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/inventory/optimize`, { method: 'POST' });
+      const response = await fetch(`${API_BASE}/logistics/inventory/optimization`, { method: 'POST' });
       const data = await response.json();
       setRetailReports(data);
       triggerAlert('push', 'Warehouse stock replenishment thresholds recalculated.');

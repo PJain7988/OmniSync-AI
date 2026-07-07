@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { db } = require('../db');
 
-router.get('/track/:product_id', (req, res) => {
+router.get('/:product_id/tracking', (req, res) => {
   const { product_id } = req.params;
   const history = db.find('supplyChain', x => x.product_id === product_id);
   if (history.length === 0) {

@@ -14,7 +14,7 @@ export default function CourtExtractor({ API_BASE, triggerAlert }) {
     if (!courtText) return;
     setCourtLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/court-order/extract`, {
+      const response = await fetch(`${API_BASE}/legal/court-orders/extraction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: courtText })

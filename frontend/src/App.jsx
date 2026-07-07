@@ -21,7 +21,7 @@ import NotificationHub from './components/NotificationHub';
 
 // Production: set VITE_API_URL in Render dashboard to https://your-backend.onrender.com/api
 // Development: Vite proxies /api → localhost:5000 automatically (see vite.config.js)
-const API_BASE = import.meta.env.VITE_API_URL || 'https://omnisync-ai.onrender.com/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://omnisync-ai.onrender.com/api/v1';
 
 const DEFAULT_NOTIFICATIONS = [
   { id: 1, channel: 'push', message: 'OmniSync Security: New JWT session authorized.', time: 'Just now' },

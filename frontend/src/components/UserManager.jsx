@@ -59,7 +59,7 @@ export default function UserManager({ API_BASE, triggerAlert }) {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE}/auth/users/create`, {
+      const response = await fetch(`${API_BASE}/auth/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

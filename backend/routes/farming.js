@@ -12,7 +12,7 @@ if (!fs.existsSync(path.join(__dirname, '../uploads/'))) {
   fs.mkdirSync(path.join(__dirname, '../uploads/'), { recursive: true });
 }
 
-router.post('/recommend', async (req, res) => {
+router.post('/recommendations', async (req, res) => {
   const { nitrogen, phosphorus, potassium, ph, moisture, temperature, humidity, rainfall, latitude, longitude } = req.body;
 
   const prompt = `Suggest optimal crop options, irrigation recommendations, and soil adjustments for a farm located at coordinates (${latitude || 28.5}, ${longitude || 77.2}) with soil status: Nitrogen=${nitrogen} mg/kg, Phosphorus=${phosphorus} mg/kg, Potassium=${potassium} mg/kg, pH=${ph}, Moisture=${moisture}%, Temp=${temperature}°C, Rainfall=${rainfall}mm.
@@ -44,7 +44,7 @@ router.post('/recommend', async (req, res) => {
   }
 });
 
-router.post('/disease-detect', upload.single('image'), (req, res) => {
+router.post('/disease-detection', upload.single('image'), (req, res) => {
   const diseases = [
     { disease: "Tomato Early Blight", confidence: 0.94, recommendation: "Apply copper-based fungicides; prune lower leaves to improve airflow." },
     { disease: "Potato Late Blight", confidence: 0.88, recommendation: "Remove infected plants immediately; avoid overhead irrigation." },
