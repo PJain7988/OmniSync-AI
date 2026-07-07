@@ -47,6 +47,13 @@ router.use('/v1', v1Router);
 
 // Fallback for root api (optional redirect or message)
 router.get('/', (req, res) => res.json({ message: 'Welcome to OmniSync API. Please use /api/v1' }));
-router.get('/health', (req, res) => res.redirect('/api/v1/health'));
+router.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    database: isUsingMongoDB() ? 'MongoDB' : 'Local JSON File',
+    timestamp: new Date().toISOString(),
+    note: 'Redirected internally to v1'
+  });
+});
 
 module.exports = router;
