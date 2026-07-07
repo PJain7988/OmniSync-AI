@@ -1,33 +1,39 @@
 async function generateText(prompt, systemInstruction = "") {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   const activeFetch = global.fetch || fetch;
 
   if (apiKey) {
     try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+      const url = `https://api.groq.com/openai/v1/chat/completions`;
+      
+      const messages = [];
+      if (systemInstruction) {
+        messages.push({ role: "system", content: systemInstruction });
+      }
+      messages.push({ role: "user", content: prompt });
+
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
         body: JSON.stringify({
-          contents: [{
-            role: 'user',
-            parts: [{ text: `${systemInstruction ? systemInstruction + "\n\n" : ""}Prompt: ${prompt}` }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 800
-          }
+          model: "mixtral-8x7b-32768",
+          messages: messages,
+          temperature: 0.7,
+          max_tokens: 800
         })
       });
 
       const data = await response.json();
-      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
-        return data.candidates[0].content.parts[0].text.trim();
+      if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+        return data.choices[0].message.content.trim();
       } else {
-        console.warn("[Gemini AI] Unexpected API response format, using fallback.", JSON.stringify(data));
+        console.warn("[Groq AI] Unexpected API response format, using fallback.", JSON.stringify(data));
       }
     } catch (e) {
-      console.error("[Gemini AI] Call failed, using fallback.", e);
+      console.error("[Groq AI] Call failed, using fallback.", e);
     }
   }
 

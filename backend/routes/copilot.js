@@ -6,7 +6,7 @@ router.post('/query', async (req, res) => {
   const { query, context, user } = req.body;
   if (!query) return res.status(400).json({ error: 'Query is required' });
 
-  const hasApiKey = !!process.env.GEMINI_API_KEY;
+  const hasApiKey = !!process.env.GROQ_API_KEY;
 
   if (hasApiKey) {
     const systemPrompt = `You are the OmniSync AI Copilot, a context-aware assistant for the MERN system. The current user is ${user ? `${user.role.name} (${user.role.dept})` : 'Anonymous'}. The active module is ${context || 'dashboard'}. Respond concisely in 2-3 sentences.`;
