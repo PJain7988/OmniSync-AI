@@ -4,6 +4,12 @@ An enterprise-ready, high-fidelity administrative suite that aggregates domain-s
 
 ---
 
+## 🚀 Live Demo
+- **Frontend (Vercel)**: [https://omni-sync-ai.vercel.app/](https://omni-sync-ai.vercel.app/)
+- **Backend API (Render)**: [https://omnisync-ai.onrender.com/api/v1/health](https://omnisync-ai.onrender.com/api/v1/health)
+
+---
+
 ## 🌐 Executive Summary
 OmniSync AI consolidates ten distinct analytical domains into a single operations portal. Instead of operating as disjointed, standalone tools, they are integrated as secure subsystems managed under a central console featuring real-time socket logging, sub-second telemetry loops, and clinical-grade reporting.
 
