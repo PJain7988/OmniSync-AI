@@ -90,12 +90,17 @@ Create a `.env` file in the `backend/` directory:
 ```env
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/omnisync
-GEMINI_API_KEY=AIzaSyYourKeyHere
+GROQ_API_KEY=gsk_YourKeyHere
 ```
 
 *   **`PORT`**: Network port for API and WebSockets.
 *   **`MONGODB_URI`**: Production-grade Database connection. If empty or MongoDB is not running locally, the system seamlessly initializes and writes to `/backend/data/db.json`.
-*   **`GEMINI_API_KEY`**: API token used to run cognitive inference summaries.
+*   **`GROQ_API_KEY`**: API token used to run cognitive inference summaries using the ultra-fast Mixtral model.
+
+---
+
+## 📡 RESTful API (v1)
+All API endpoints follow industry-standard RESTful practices and are versioned under the `/api/v1/` namespace (e.g. `/api/v1/agriculture/recommendations`).
 
 ---
 
