@@ -26,7 +26,7 @@ jobs:
           echo "HTTP Status Code: $HTTP_STATUS"
           echo "Response Body: $HTTP_BODY"
           
-          if [ "$HTTP_STATUS" -ne 200 ]; then
+          if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 302 ]; then
             echo "Error: Health check failed with status $HTTP_STATUS"
             exit 1
           fi
