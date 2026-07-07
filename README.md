@@ -10,6 +10,15 @@ An enterprise-ready, high-fidelity administrative suite that aggregates domain-s
 
 ---
 
+## 📸 Screenshots
+### Admin Dashboard
+![OmniSync Dashboard](docs/dashboard.png)
+
+### Telemetry Analytics
+![OmniSync Analytics](docs/analytics.png)
+
+---
+
 ## 🌐 Executive Summary
 OmniSync AI consolidates ten distinct analytical domains into a single operations portal. Instead of operating as disjointed, standalone tools, they are integrated as secure subsystems managed under a central console featuring real-time socket logging, sub-second telemetry loops, and clinical-grade reporting.
 
