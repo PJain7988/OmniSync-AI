@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "description": "Unified OmniSync AI suite merging 10 AI projects with MERN stack.",
+  "homepage": "https://omni-sync-ai.vercel.app/",
   "engines": {
     "node": ">=18.0.0"
   },

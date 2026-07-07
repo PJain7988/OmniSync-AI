@@ -12,7 +12,10 @@ const apiRouter = require('./routes/api');
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: ['https://omni-sync-ai.vercel.app', 'http://localhost:5173', 'http://localhost:5000'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Serving uploaded files statically
