@@ -35,15 +35,14 @@ async function seedInitialCredentials() {
   if (_seedingDone) return; // prevent double-run
   _seedingDone = true;
   try {
-    const credPath = path.join(__dirname, '../initial_credentials.json');
-    if (!fs.existsSync(credPath)) {
-      console.log('[Seeding] No initial_credentials.json found. Skipping.');
-      return;
-    }
-
-    const raw = JSON.parse(fs.readFileSync(credPath, 'utf8'));
-    // Support both a single object and an array of credential objects
-    const credList = Array.isArray(raw) ? raw : [raw];
+    const credList = [
+      { email: "admin@omnisync.ai", password: "Admin@2026", roleId: "admin", handle: "@admin_ops" },
+      { email: "doctor@omnisync.ai", password: "Doctor@2026", roleId: "doctor", handle: "@clinical_dir" },
+      { email: "lawyer@omnisync.ai", password: "Lawyer@2026", roleId: "lawyer", handle: "@legal_counsel" },
+      { email: "farmer@omnisync.ai", password: "Farmer@2026", roleId: "farmer", handle: "@farm_super" },
+      { email: "logistics@omnisync.ai", password: "Logistics@2026", roleId: "logistics", handle: "@logistics_officer" },
+      { email: "citizen@omnisync.ai", password: "Citizen@2026", roleId: "citizen", handle: "@citizen_op" }
+    ];
 
     const User = require('./models/User');
     const crypto = require('crypto');
