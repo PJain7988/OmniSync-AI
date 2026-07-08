@@ -179,7 +179,14 @@ const localDB = {
     const data = localDB.read();
     if (!data[collectionName]) data[collectionName] = [];
     
-    const idx = data[collectionName].findIndex(x => (x.id === item.id || x._id === item._id || (x.sku && x.sku === item.sku) || (x.product_id && x.product_id === item.product_id)));
+    const idx = data[collectionName].findIndex(x => {
+      if (item.id && x.id === item.id) return true;
+      if (item._id && x._id === item._id) return true;
+      if (item.sku && x.sku === item.sku) return true;
+      if (item.product_id && x.product_id === item.product_id) return true;
+      if (item.email && x.email === item.email) return true;
+      return false;
+    });
     if (idx > -1) {
       data[collectionName][idx] = { ...data[collectionName][idx], ...item };
     } else {
