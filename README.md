@@ -98,6 +98,21 @@ Each modular component functions as an integrated dashboard component:
 
 ---
 
+## 🔑 Default Login Credentials
+
+If you do not wish to register a new account, the backend automatically seeds the database with the following demo credentials upon first startup:
+
+| Role / Department | Email | Password |
+| :--- | :--- | :--- |
+| **System Administrator** | `admin@omnisync.ai` | `Admin@2026` |
+| **Clinical Director** | `doctor@omnisync.ai` | `Doctor@2026` |
+| **Legal Counsel** | `lawyer@omnisync.ai` | `Lawyer@2026` |
+| **Farm Superintendent** | `farmer@omnisync.ai` | `Farmer@2026` |
+| **Logistics Officer** | `logistics@omnisync.ai` | `Logistics@2026` |
+| **Citizen Operator** | `citizen@omnisync.ai` | `Citizen@2026` |
+
+---
+
 ## ⚙️ Configuration & Environment Variables
 
 Create a `.env` file in the `backend/` directory:
