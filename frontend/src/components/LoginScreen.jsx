@@ -149,7 +149,7 @@ export default function LoginScreen({ onLogin, API_BASE }) {
     setSsoModal(null);
 
     const email = `${roleObj.id}@omnisync.ai`;
-    const password = `sso-pass-2026`;
+    const password = `${roleObj.id.charAt(0).toUpperCase() + roleObj.id.slice(1)}@2026`;
     const handle = `${roleObj.handle}_sso`;
 
     try {
