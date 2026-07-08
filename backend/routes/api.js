@@ -38,7 +38,10 @@ v1Router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     database: isUsingMongoDB() ? 'MongoDB' : 'Local JSON File',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    uptime_seconds: process.uptime(),
+    memory_usage: process.memoryUsage(),
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
