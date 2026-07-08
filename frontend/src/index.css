@@ -529,3 +529,42 @@ body::before, body::after, .theme-light-glow, .watermark-bg {
     gap: 16px;
   }
 }
+
+/* Marquee List Styling for LoginScreen */
+.feature-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.feature-marquee-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: scroll-marquee 25s linear infinite;
+}
+
+.feature-pill {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+@keyframes scroll-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 8px)); /* Moves exactly half the width */ }
+}
