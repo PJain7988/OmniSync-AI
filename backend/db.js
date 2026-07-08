@@ -82,7 +82,18 @@ async function seedInitialCredentials() {
       }
 
       if (existing) {
-        console.log(`[Seeding] Already exists, skipping: ${email}`);
+        console.log(`[Seeding] User ${email} already exists, updating password to ensure correctness...`);
+        const salt = crypto.randomBytes(16).toString('hex');
+        const passwordHash = hashPassword(password, salt);
+        if (isUsingMongoDB) {
+          existing.passwordHash = passwordHash;
+          existing.salt = salt;
+          await existing.save();
+        } else {
+          existing.passwordHash = passwordHash;
+          existing.salt = salt;
+          localDB.saveToCollection('users', existing);
+        }
         skipped++;
         continue;
       }
