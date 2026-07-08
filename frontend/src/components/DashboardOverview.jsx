@@ -73,50 +73,55 @@ export default function DashboardOverview({ setActiveTab }) {
       </div>
 
       {/* Telemetry Metrics Grid */}
-      <div className="grid-3" style={{ gap: '16px' }}>
-        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px' }}>
-          <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(0, 240, 255, 0.1)', color: 'var(--accent-cyan)' }}>
-            <Cpu size={24} />
+      <div className="grid-3" style={{ gap: '20px' }}>
+        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '24px', borderLeft: '4px solid var(--accent-cyan)' }}>
+          <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(14, 165, 233, 0.15)', color: 'var(--accent-cyan)', boxShadow: '0 0 15px rgba(14, 165, 233, 0.2)' }}>
+            <Cpu size={28} />
           </div>
           <div>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Neural Threads</span>
-            <h3 style={{ fontSize: '24px', fontWeight: '700', marginTop: '4px' }}>{metrics.threadsActive} / 10 Online</h3>
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>Neural Threads</span>
+            <h3 style={{ fontSize: '28px', fontWeight: '800', marginTop: '4px', letterSpacing: '-0.5px' }}>{metrics.threadsActive} <span style={{fontSize: '16px', color: 'var(--text-muted)'}}>/ 10</span></h3>
           </div>
         </div>
 
-        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px' }}>
-          <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(189, 0, 255, 0.1)', color: 'var(--accent-purple)' }}>
-            <Wifi size={24} />
+        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '24px', borderLeft: '4px solid var(--accent-purple)' }}>
+          <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.15)', color: 'var(--accent-purple)', boxShadow: '0 0 15px rgba(139, 92, 246, 0.2)' }}>
+            <Wifi size={28} />
           </div>
           <div>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Avg Response Latency</span>
-            <h3 style={{ fontSize: '24px', fontWeight: '700', marginTop: '4px' }}>{metrics.latency} ms</h3>
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>Avg Latency</span>
+            <h3 style={{ fontSize: '28px', fontWeight: '800', marginTop: '4px', letterSpacing: '-0.5px' }}>{metrics.latency} <span style={{fontSize: '16px', color: 'var(--text-muted)'}}>ms</span></h3>
           </div>
         </div>
 
-        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px' }}>
-          <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--accent-emerald)' }}>
-            <HardDrive size={24} />
+        <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '24px', borderLeft: '4px solid var(--accent-emerald)' }}>
+          <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.15)', color: 'var(--accent-emerald)', boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)' }}>
+            <HardDrive size={28} />
           </div>
           <div>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Total System Actions</span>
-            <h3 style={{ fontSize: '24px', fontWeight: '700', marginTop: '4px' }}>{metrics.logsProcessed} logs</h3>
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600' }}>Total Actions</span>
+            <h3 style={{ fontSize: '28px', fontWeight: '800', marginTop: '4px', letterSpacing: '-0.5px' }}>{metrics.logsProcessed}</h3>
           </div>
         </div>
       </div>
 
       {/* Live Agent Terminal Feed */}
-      <div className="glass-card" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-          <Terminal size={16} style={{ color: 'var(--accent-cyan)' }} />
-          <span style={{ fontSize: '13px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>Real-Time Multi-Agent Transaction Console</span>
+      <div className="glass-card" style={{ padding: '0', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 20px', background: 'rgba(0,0,0,0.2)', borderBottom: '1px solid var(--glass-border)' }}>
+          <Terminal size={18} style={{ color: 'var(--accent-cyan)' }} />
+          <span style={{ fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-primary)' }}>Real-Time Agent Console</span>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent-rose)' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent-amber)' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent-emerald)' }} />
+          </div>
         </div>
-        <div style={{ height: '180px', overflowY: 'auto', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', padding: '14px', fontFamily: 'monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '6px', border: '1px solid var(--glass-border)', textAlign: 'left' }}>
+        <div style={{ height: '200px', overflowY: 'auto', background: '#0f172a', padding: '20px', fontFamily: '"JetBrains Mono", monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
           {consoleLogs.map((log, idx) => (
-            <div key={idx} style={{ display: 'flex', gap: '10px' }}>
-              <span style={{ color: 'var(--text-muted)' }}>[{log.time}]</span>
-              <span style={{ color: 'var(--accent-cyan)', fontWeight: '600' }}>[{log.type}]</span>
-              <span style={{ color: 'var(--text-primary)' }}>{log.msg}</span>
+            <div key={idx} style={{ display: 'flex', gap: '12px', lineHeight: '1.4' }}>
+              <span style={{ color: '#64748b', whiteSpace: 'nowrap' }}>[{log.time}]</span>
+              <span style={{ color: 'var(--accent-cyan)', fontWeight: '600', width: '80px', flexShrink: 0 }}>[{log.type}]</span>
+              <span style={{ color: '#e2e8f0' }}>{log.msg}</span>
             </div>
           ))}
           <div ref={logEndRef} />

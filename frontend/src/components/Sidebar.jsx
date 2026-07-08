@@ -28,20 +28,21 @@ export default function Sidebar({ activeTab, setActiveTab, dbStatus, user, onLog
         {/* User Identity Profile Card */}
         {user && (
           <div style={{
-            padding: '12px 16px',
-            margin: '12px 14px',
-            background: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: '10px',
+            padding: '16px',
+            margin: '16px 14px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '12px',
             fontSize: '12px',
-            textAlign: 'left'
+            textAlign: 'left',
+            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', color: 'var(--accent-cyan)' }}>
-              <UserCheck size={14} />
-              <strong style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.role.name}</strong>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: 'var(--accent-cyan)' }}>
+              <UserCheck size={16} />
+              <strong style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '13px' }}>{user.role.name}</strong>
             </div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '11px', marginBottom: '2px' }}>{user.role.dept}</div>
-            <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+            <div style={{ color: 'var(--text-primary)', fontSize: '12px', marginBottom: '4px', fontWeight: '500' }}>{user.role.dept}</div>
+            <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: '"JetBrains Mono", monospace', wordBreak: 'break-all', opacity: 0.8 }}>
               Scope: {user.role.scope}
             </div>
           </div>
