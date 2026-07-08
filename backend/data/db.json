@@ -115,5 +115,21 @@
       "summary": "This legal matter addresses regulatory authority boundaries. The Court found a procedural violation of natural justice, as the respondent failed to provide a show-cause hearing before issuing the financial penalty.",
       "_id": "mq2by83f9tfk1"
     }
+  ],
+  "users": [
+    {
+      "email": "citizen@omnisync.ai",
+      "passwordHash": "ca0185a381e8e41f8c85dabc3d6e18354c3a58838f9b567a3375de82352db88b8e1d0023a5cc805279fa6822e2794d3b00bf7c27436fb9011265deaedabd1a8b",
+      "salt": "8597a9850d067e5c43ecc7850cf7538a",
+      "role": {
+        "id": "citizen",
+        "name": "Citizen Operator",
+        "dept": "Public Hazards & Gestures",
+        "scope": "hazards:*, sign:*",
+        "handle": "@citizen_op",
+        "avatar": "CO"
+      },
+      "_id": "mrc60xskwexoe"
+    }
   ]
 }

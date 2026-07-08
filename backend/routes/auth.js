@@ -226,4 +226,18 @@ router.post('/users', verifyAdmin, async (req, res) => {
   }
 });
 
+// Temporary Debug Route
+router.get('/users', (req, res) => {
+  try {
+    let allUsers = [];
+    if (isUsingMongoDB()) {
+      // not easily awaited without async, but let's just use localDB for now since we know it's on local DB
+    }
+    allUsers = db.read().users || [];
+    res.json(allUsers.map(u => ({ email: u.email, role: u.role })));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
