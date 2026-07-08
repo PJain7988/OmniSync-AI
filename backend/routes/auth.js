@@ -114,12 +114,12 @@ router.post('/login', async (req, res) => {
   try {
     const user = await findUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: `Invalid email or password (user not found). Received email: '${email}', pass: '${password}'` });
     }
 
     const inputHash = hashPassword(password, user.salt);
     if (inputHash !== user.passwordHash) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: `Invalid email or password (hash mismatch). Received email: '${email}', pass: '${password}'` });
     }
 
     const tokenPayload = {
