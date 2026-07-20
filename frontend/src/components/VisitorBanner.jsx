@@ -61,7 +61,7 @@ export default function VisitorBanner() {
       </div>
       
       <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#9ca3af', margin: '0 0 16px 0' }}>
-        To optimize AWS EC2 cloud costs for this heavy microservices project, the backend may be sleeping. If login fails, please review the architecture on GitHub.
+        To optimize cloud resources, our backend microservices may temporarily enter standby mode. If you experience any delays or login issues, we invite you to review our comprehensive system architecture on GitHub.
       </p>
 
       <a
