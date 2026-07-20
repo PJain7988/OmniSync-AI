@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Github, AlertTriangle, X } from 'lucide-react'; 
+import { AlertTriangle, X } from 'lucide-react'; 
 
 export default function VisitorBanner() {
   const [isVisible, setIsVisible] = useState(true);
@@ -85,7 +85,19 @@ export default function VisitorBanner() {
         onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
         onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
       >
-        <Github size={16} />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.03c3.15-.38 6.5-1.4 6.5-7.17 0-1.5-.5-2.73-1.3-3.7.13-.32.6-1.75-.13-3.64 0 0-1-.32-3.3 1.2a11.5 11.5 0 0 0-6 0C7.5 4.14 6.5 4.46 6.5 4.46c-.73 1.89-.26 3.32-.13 3.64-.8.97-1.3 2.2-1.3 3.7 0 5.77 3.35 6.79 6.5 7.17a4.8 4.8 0 0 0-1 3.03v4" />
+        </svg>
         View Source Code
       </a>
     </div>
