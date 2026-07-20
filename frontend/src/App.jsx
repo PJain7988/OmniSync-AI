@@ -18,6 +18,7 @@ import UserManager from './components/UserManager';
 import LoginScreen from './components/LoginScreen';
 import AICopilot from './components/AICopilot';
 import NotificationHub from './components/NotificationHub';
+import VisitorBanner from './components/VisitorBanner';
 
 // Production: set VITE_API_URL in Render dashboard to https://your-backend.onrender.com/api
 // Development: Vite proxies /api → localhost:5000 automatically (see vite.config.js)
@@ -311,6 +312,9 @@ export default function App() {
         onClose={() => setCopilotOpen(false)} 
         chatbaseLoaded={chatbaseLoaded}
       />
+      
+      {/* Visitor Banner */}
+      <VisitorBanner />
     </>
   );
 }
