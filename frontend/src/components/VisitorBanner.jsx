@@ -61,7 +61,7 @@ export default function VisitorBanner() {
       </div>
       
       <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#9ca3af', margin: '0 0 16px 0' }}>
-        Our backend may temporarily sleep to optimize cloud resources. If you experience delays, please review our architecture on GitHub.
+        Our backend services may temporarily enter standby mode to optimize cloud infrastructure. Should you experience any latency, please refer to our architecture documentation on GitHub.
       </p>
 
       <a
